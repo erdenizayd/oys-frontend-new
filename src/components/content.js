@@ -7,6 +7,7 @@ import CoursesListComponent from "./courseslist";
 import EnrollCourseComponent from "./enrollcourse";
 import GradeComponent from "./grade";
 import CourseSearchComponent from "./searchcourse";
+import UsersContentComponent from "./userscontent";
 import UsersListComponent from "./userslist";
 import UsersSearchComponent from "./userssearch";
 
@@ -153,9 +154,7 @@ function ContentComponent(props) {
     else if(props.page === "users") {
         return (
             <div className="content">
-                <div className="title">Kullanıcılar</div>
-                <UsersSearchComponent />
-                <UsersListComponent/>
+                <UsersContentComponent />
             </div>
         )
     }

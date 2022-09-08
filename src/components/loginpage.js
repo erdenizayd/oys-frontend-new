@@ -13,13 +13,16 @@ function LoginComponent() {
 
     let navigate = useNavigate();
     async function handleClick() {
-        console.log(valFirst);
-
-        const response = (await loginApi.login(valFirst, valSecond)).data;
-        console.log(response);
-        localStorage.setItem("role",response);
-        setRole(response);
-        navigate('/')
+        try{
+            const response = (await loginApi.login(valFirst, valSecond)).data;
+            localStorage.setItem("username",response.username);
+            localStorage.setItem("role",response.role);
+            setRole(response);
+            navigate('/');
+        }
+        catch(error) {
+            console.log(error.message);
+        }
     }
 
     return (
