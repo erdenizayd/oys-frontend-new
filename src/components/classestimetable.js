@@ -9,22 +9,25 @@ import React, { useState } from "react";
 
 
 export default function ClassesTimeTableComponent(props) {
+
     return (
         <TableContainer component={Paper} sx={{width: '90%', margin: 'auto', marginTop: '20px'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
                     <TableRow >
-                        <TableCell sx={{ width: '20%' }}>Pazartesi</TableCell>
-                        <TableCell sx={{ width: '20%' }}>Salı</TableCell>
-                        <TableCell sx={{ width: '20%' }}>Çarşamba</TableCell>
-                        <TableCell sx={{ width: '20%' }}>Perşembe</TableCell>
-                        <TableCell sx={{ width: '20%' }}>Cuma</TableCell>
+                        <TableCell sx={{ width: '10%' }}>Saatler</TableCell>
+                        <TableCell sx={{ width: '18%' }}>Pazartesi</TableCell>
+                        <TableCell sx={{ width: '18%' }}>Salı</TableCell>
+                        <TableCell sx={{ width: '18%' }}>Çarşamba</TableCell>
+                        <TableCell sx={{ width: '18%' }}>Perşembe</TableCell>
+                        <TableCell sx={{ width: '18%' }}>Cuma</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                 {props.rows.map((row) => (
                     <TableRow
                     >
+                    <TableCell>{row.hour}</TableCell>
                     <TableCell>{row.monday}</TableCell>
                     <TableCell>{row.tuesday}</TableCell>
                     <TableCell>{row.wednesday}</TableCell>

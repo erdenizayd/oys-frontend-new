@@ -6,53 +6,54 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { IconButton } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import RoleContext from '../context/rolecontext';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CourseApi from '../api/courseapi';
 
-function CoursesListComponent(props) {
-
-    const {role} = useContext(RoleContext);
-    const courses = [
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"
-        },
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"
-        },
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"        },
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"        },
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"        },
-        {
-            code: "CENG111",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"        },
-        {
-            code: "CENG250",
-            name: "Introduction to Computer Engineering Concepts",
-            instructor: "Memo Ero Ayo",
-            time: "Thursday 14.40 - 15.30, Friday 09.40 - 11.30"        }
+function createCourseHours(courseHours) {
+    const schedule = [[],[],[],[],[]];
+    const scheduleObj = [[],[],[],[],[]];
+    const hours = [
+        "8.40","9.40","10.40","11.40","13.40","14.40","15.40","16.40"
+    ];
+    const days = [
+        "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"
     ];
 
+    let returnStr = ""
+
+    courseHours.forEach(e => {
+        schedule[e.dayOfWeek - 1].push(e.hour - 1);
+    });
+    
+
+    for(let i = 0; i < 5; i++) {
+        console.log(schedule[i]);
+        if(schedule[i].length > 0) {
+            schedule[i].sort();
+            returnStr = returnStr + days[i] + ": ";
+            schedule[i].forEach((e) => {returnStr = returnStr + hours[e] + " "});
+            returnStr = returnStr + "\n";
+        }
+    }
+
+    return returnStr;
+}
+
+function CoursesListComponent(props) {
+    const courseApi = new CourseApi();
+
+    const [courses,setCourses] = useState([]);
+
+    useEffect(() => {
+        fetchCourses();
+    }, []);
+
+    async function fetchCourses() {
+        const response = (await courseApi.getCoursesList()).data;
+        setCourses(response);
+    }
 
     return (
         <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px'}} >
@@ -72,10 +73,10 @@ function CoursesListComponent(props) {
                     >
                     <TableCell>{row.code}</TableCell>
                     <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.instructor}</TableCell>
-                    <TableCell>{row.time}</TableCell>
-                    <TableCell><IconButton><SchoolIcon/></IconButton></TableCell>
-                    {(localStorage.getItem("role") === 'ADMIN') && <TableCell><IconButton><DeleteIcon/></IconButton></TableCell>}
+                    <TableCell>{row.lecturerName}</TableCell>
+                    <TableCell>{createCourseHours(row.courseHours)}</TableCell>
+                    <TableCell><IconButton><SchoolIcon/></IconButton>
+                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton><DeleteIcon/></IconButton>}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>

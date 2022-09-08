@@ -22,5 +22,11 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
-
+  app.use(
+    '/courses',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
 };

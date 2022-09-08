@@ -1,11 +1,4 @@
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import React, { useEffect, useState } from "react";
 import ClassesTimeTableComponent from "./classestimetable";
 import { RoomApi } from "../api/roomapi";
@@ -17,6 +10,7 @@ export default function ClassesTableComponent() {
     const [currentClass, setCurrentClass] = useState('');
     const [rows, setRows] = useState([
         {
+            hour: "8.40",
             monday: "",
             tuesday: "",
             wednesday: "",
@@ -24,6 +18,7 @@ export default function ClassesTableComponent() {
             friday: ""
         },
         {
+            hour: "9.40",
             monday: "",
             tuesday: "",
             wednesday: "",
@@ -31,6 +26,7 @@ export default function ClassesTableComponent() {
             friday: ""
         },
         {
+            hour: "10.40",
             monday: "",
             tuesday: "",
             wednesday: "",
@@ -38,25 +34,21 @@ export default function ClassesTableComponent() {
             friday: ""
         },
         {
+            hour: "11.40",
             monday: "",
             tuesday: "",
             wednesday: "",
             thursday: "",
             friday: ""
         },{
-            monday: "",
-            tuesday: "",
-            wednesday: "",
-            thursday: "",
-            friday: ""
-        },
-        {
+            hour: "12.40",
             monday: "",
             tuesday: "",
             wednesday: "",
             thursday: "",
             friday: ""
         },{
+            hour: "13.40",
             monday: "",
             tuesday: "",
             wednesday: "",
@@ -64,6 +56,22 @@ export default function ClassesTableComponent() {
             friday: ""
         },
         {
+            hour: "14.40",
+            monday: "",
+            tuesday: "",
+            wednesday: "",
+            thursday: "",
+            friday: ""
+        },{
+            hour: "15.40",
+            monday: "",
+            tuesday: "",
+            wednesday: "",
+            thursday: "",
+            friday: ""
+        },
+        {
+            hour: "16.40",
             monday: "",
             tuesday: "",
             wednesday: "",
@@ -133,19 +141,19 @@ export default function ClassesTableComponent() {
 
         switch(course.dayOfWeek){
             case 1:
-                newRows[course.hour].monday = course.courseName;
+                newRows[course.hour - 1].monday = course.courseName;
                 break;
             case 2:
-                newRows[course.hour].tuesday = course.courseName;
+                newRows[course.hour - 1].tuesday = course.courseName;
                 break;
             case 3:
-                newRows[course.hour].wednesday = course.courseName;
+                newRows[course.hour - 1].wednesday = course.courseName;
                 break;
             case 4:
-                newRows[course.hour].thursday = course.courseName;
+                newRows[course.hour - 1].thursday = course.courseName;
                 break;
             case 5:
-                newRows[course.hour].friday = course.courseName;
+                newRows[course.hour - 1].friday = course.courseName;
                 break;
         }
 
