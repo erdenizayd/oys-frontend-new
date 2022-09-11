@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, Select, MenuItem, Button, Modal, Box} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ClassesTimeTableComponent from "./classestimetable";
+import CourseTimeTableComponent from "./addcoursestimetable";
 import { RoomApi } from "../api/roomapi";
 import AddNewCourseFormComponent from "./addnewcourseform";
 import CourseApi from "../api/courseapi";
@@ -271,7 +271,7 @@ export default function AddNewCourseClassesTableComponent(props) {
                { classes.map((e) => {return <MenuItem value={e.name}>{e.name}</MenuItem>})}
             </Select>
         </FormControl>
-        {(currentClass && <div><ClassesTimeTableComponent clicked={clicked} setClicked={setClicked} rows={rows}/>
+        {(currentClass && <div><CourseTimeTableComponent clicked={clicked} setClicked={setClicked} rows={rows}/>
         <Button onClick={handleOpen}>Ders Ekle</Button>
         <Modal
                 open={open}

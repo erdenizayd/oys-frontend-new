@@ -11,14 +11,6 @@ import { Button } from '@mui/material';
 
 export default function ClassesTimeTableComponent(props) {
 
-    function handleClick(index,secIndex,text) {
-        if(text == ""){
-            let tempTable = [...props.clicked];
-            tempTable[index][secIndex] = !tempTable[index][secIndex];
-            props.setClicked(tempTable);
-        }
-    }
-
     return (
         <TableContainer component={Paper} sx={{width: '90%', margin: 'auto', marginTop: '20px'}} >
             <Table sx={{ }} aria-label="simple table">
@@ -33,31 +25,15 @@ export default function ClassesTimeTableComponent(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {props.rows.map((row,index) => (
+                {props.rows.map((row) => (
                     <TableRow
                     >
                     <TableCell>{row.hour}</TableCell>
-                    <TableCell sx={props.clicked[index][0] ? 
-                        {backgroundColor: "black"} :
-                        {}} onClick={() => handleClick(index,0, row.monday)}>
-                            {row.monday == "" ? "" : row.monday}
-                        </TableCell>
-                    <TableCell sx={props.clicked[index][1] ? 
-                        {backgroundColor: "black"} :
-                        {}} onClick={() => handleClick(index,1,row.tuesday)}>
-                            {row.tuesday == "" ? "": row.tuesday}</TableCell>
-                    <TableCell sx={props.clicked[index][2] ? 
-                        {backgroundColor: "black"} :
-                        {}} onClick={() => handleClick(index,2,row.wednesday)}>
-                            {row.wednesday == "" ? "": row.wednesday}</TableCell>
-                    <TableCell sx={props.clicked[index][3] ? 
-                        {backgroundColor: "black"} :
-                        {}} onClick={() => handleClick(index,3,row.thursday)}>
-                            {row.thursday == "" ? "": row.thursday}</TableCell>
-                    <TableCell sx={props.clicked[index][4] ? 
-                        {backgroundColor: "black"} :
-                        {}} onClick={() => handleClick(index,4,row.friday)}>
-                            {row.friday == "" ? "": row.friday}</TableCell>
+                    <TableCell>{row.monday}</TableCell>
+                    <TableCell>{row.tuesday}</TableCell>
+                    <TableCell>{row.wednesday}</TableCell>
+                    <TableCell>{row.thursday}</TableCell>
+                    <TableCell>{row.friday}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
