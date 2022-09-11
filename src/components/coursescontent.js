@@ -3,6 +3,7 @@ import { useState } from "react";
 import PropTypes from 'prop-types';
 import CourseSearchComponent from "./searchcourse";
 import CoursesListComponent from "./courseslist";
+import AddNewCourseClassesTableComponent from "./addnewcourseclasses";
 
 
 function TabPanel(props) {
@@ -60,7 +61,7 @@ export default function CoursesContentComponent() {
                 <CoursesListComponent />        
         </TabPanel>
         <TabPanel value={value} index={1}>
-            Item Two
+            <AddNewCourseClassesTableComponent/>
         </TabPanel>
         </Box>
     );

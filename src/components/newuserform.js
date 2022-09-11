@@ -14,7 +14,7 @@ export default function NewUserFormComponent(props) {
         newState[name] = value;
         setFormState(newState);
 
-      }
+    }
 
     return (props.role &&
         <Box

@@ -28,5 +28,9 @@ export default class UserApi {
     enableUser(id) {
         return axios.put("/users/enable/" + id);
     }
+    
+    getLecturers() {
+        return axios.get("/lecturers");
+    }
 
 }

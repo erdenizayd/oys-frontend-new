@@ -1,13 +1,30 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Button, Modal, Box} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ClassesTimeTableComponent from "./classestimetable";
 import { RoomApi } from "../api/roomapi";
+import AddNewCourseFormComponent from "./addnewcourseform";
+import CourseApi from "../api/courseapi";
 
-export default function ClassesTableComponent() {
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: '5px'
+};
+
+export default function AddNewCourseClassesTableComponent(props) {
 
     const roomApi = new RoomApi();
+    const [type, setType] = useState('');
+    const courseApi = new CourseApi();
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState('');
+    const [response, setResponse] = useState({});
     const [rows, setRows] = useState([
         {
             hour: "8.40",
@@ -151,8 +168,27 @@ export default function ClassesTableComponent() {
         }
     ]
 
+    const [clicked,setClicked] = useState([
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false],
+        [false,false,false,false,false]
+    ]);
+
+    const [hourList, setHourList] = useState([]);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => {setOpen(true);
+    getHourList();};
+    const handleClose = () => setOpen(false);
+    
+
     function createRows(course) {
-        const newRows = [...rows];
+        const newRows = [...emptyRows];
 
         switch(course.dayOfWeek){
             case 1:
@@ -177,23 +213,47 @@ export default function ClassesTableComponent() {
 
     useEffect(() => {
         fetchClasses();
-    }, [])
+    }, [response,rows])
+
+    function getHourList() {
+        const newList = [];
+        for(let i = 0; i < 8; i++) {
+            for(let j = 0; j < 5; j++) {
+                if(clicked[i][j] == true) {
+                    newList.push({"first": j+1 , "second": i+1});
+                }
+            }
+        }
+        setHourList(newList);
+    }
+
+    async function createCourse(formState) {
+        const request = {
+            name: formState.name,
+            about: formState.about,
+            type: type,
+            code: formState.code,
+            courseHourList: hourList,
+            roomName: currentClass,
+            lecturerName: formState.lecturerName
+        };
+        const response = (await courseApi.createCourse(request)).data;
+        setResponse(response);
+    }
 
     async function fetchClasses() {
         const response = (await roomApi.getRooms()).data;
-        console.log(response);
         setClasses(response);
     }
 
-    const handleChange = (event) => {
+    function handleChange(event) {
         setCurrentClass(event.target.value);
-        setRows(emptyRows);
         fetchTable(event.target.value);
     };
 
     async function fetchTable(name) {
         const response = (await roomApi.getRoom(name)).data;
-        console.log(name);
+        setRows(emptyRows);
         response.map((e) => createRows(e));
     }
 
@@ -211,7 +271,19 @@ export default function ClassesTableComponent() {
                { classes.map((e) => {return <MenuItem value={e.name}>{e.name}</MenuItem>})}
             </Select>
         </FormControl>
-        {(currentClass && <ClassesTimeTableComponent rows={rows}/>
+        {(currentClass && <div><ClassesTimeTableComponent clicked={clicked} setClicked={setClicked} rows={rows}/>
+        <Button onClick={handleOpen}>Ders Ekle</Button>
+        <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={style}>
+                    <AddNewCourseFormComponent setType={setType} type={type} submit={createCourse}/>
+                </Box>
+            </Modal>  
+        </div>
             )}
         </div>
     );
