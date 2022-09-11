@@ -4,11 +4,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from 'react';
-import { TextField } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import NewUserFormComponent from './newuserform';
 import UserApi from '../api/userapi';
+import { useNavigate } from 'react-router';
 
-export default function AddNewUserComponent() {
+export default function AddNewUserComponent(props) {
 
     const userApi = new UserApi();
     const [role, setRole] = useState('');
@@ -25,12 +26,15 @@ export default function AddNewUserComponent() {
         };
 
         const response = (await userApi.addUser(request)).data;
-        console.log(response);
+        props.setResponse(response);
     }
 
     return (
         <Box sx={{ minWidth: 120 }}>
-        <FormControl variant="standard" fullWidth>
+            {props.response ? <div><Typography>{props.response}</Typography> 
+            <Button sx={{float: "right"}} onClick={() => {props.setOpen(false)}}>
+                Kapat</Button></div>: 
+            <div><FormControl variant="standard" fullWidth>
             <InputLabel id="user-role-select">Kullanıcı Rolü</InputLabel>
             <Select
             labelId="user-role-select-label"
@@ -46,6 +50,8 @@ export default function AddNewUserComponent() {
             </Select>
         </FormControl>
         <NewUserFormComponent role={role} submit={addUser} />
+        <Button sx={{float: "right"}} onClick={() => {props.setOpen(false)}}>İptal</Button></div>}
+        
         </Box>
         
     );

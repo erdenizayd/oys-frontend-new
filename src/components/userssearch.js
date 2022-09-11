@@ -1,11 +1,19 @@
-import { TextField } from "@mui/material";
+import { TextField, Button, Box } from "@mui/material";
 
-function UsersSearchComponent() {
+function UsersSearchComponent(props) {
     return (
-        <div>
-            <span><TextField id="name" label="İsim" variant="standard" margin='dense' sx={{marginRight: '30px'}} /></span>
-            <span><TextField id="username" label="Kullanıcı Adı" variant="standard" margin='dense' /></span>
-        </div>
+        <Box sx={{marginTop: '20px'}}>
+            <span><TextField id="name" label="İsim" variant="standard"  
+            sx={{marginRight: '30px'}} 
+            value={props.nameSearch}
+            onChange={(event) => {props.setNameSearch(event.target.value)}}/></span>
+            <span><TextField id="username" label="Kullanıcı Adı" variant="standard" 
+            value={props.usernameSearch}
+            onChange={(event) => {props.setUsernameSearch(event.target.value)}}/></span>
+            <span><Button sx={{float: "right", margin:"20px"}}
+                    color="success"
+                    onClick={props.handleOpen} variant="contained">Yeni Kullanıcı Ekle</Button></span>
+        </Box>
     );
 }
 

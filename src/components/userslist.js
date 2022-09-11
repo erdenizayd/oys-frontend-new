@@ -4,29 +4,70 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import React, { useContext, useEffect, useState } from "react";
 import UserApi from '../api/userapi';
+import UsersPaginationComponent from './userspagination';
 
-function UsersListComponent() {
+function UsersListComponent(props) {
 
     const [users, setUsers] = useState([]);
+    const [isUpdated, setIsUpdated] = useState(false);
+    const [pageCount, setPageCount] = useState(0);
+    const [page, setPage] = useState(1);
     const userApi = new UserApi();
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     useEffect(() => {
         fetchUsers();
-    }, []);
+    }, [props.response,isUpdated,props.usernameSearch, props.nameSearch]);
 
     async function fetchUsers() {
-        const response = (await userApi.getUsers()).data;
-        console.log(response);
-        setUsers(response);
+        if(props.nameSearch == '' && props.usernameSearch == ''){
+            const response = (await userApi.getUsers(page-1)).data;
+            setIsUpdated(!isUpdated);
+            setUsers(response);
+            if(response.length > 0)setPageCount(response[0].pageCount);
+        }
+        else if(props.usernameSearch == '') {
+            const response = (await userApi.getUsersByName(page-1,props.nameSearch)).data;
+            setIsUpdated(!isUpdated);
+            setUsers(response);
+            if(response.length > 0)setPageCount(response[0].pageCount);
+        }
+        else if(props.nameSearch == '') {
+            const response = (await userApi.getUsersByUsername(page-1,props.usernameSearch)).data;
+            setIsUpdated(!isUpdated);
+            setUsers(response);
+            if(response.length > 0)setPageCount(response[0].pageCount);
+        }
+        else {
+            const response = (await userApi.getUsersByNameAndUsername(page-1,props.nameSearch,props.usernameSearch)).data;
+            setIsUpdated(!isUpdated);
+            setUsers(response);
+            if(response.length > 0)setPageCount(response[0].pageCount);
+        }
+        
+    }
+
+    async function disableUser(id) {
+        const response = (await userApi.disableUser(id)).data;
+        setIsUpdated(!isUpdated);
+    }
+
+    async function enableUser(id) {
+        const response = (await userApi.enableUser(id)).data;
+        setIsUpdated(!isUpdated);
     }
 
 
     return (
+        <div>
         <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px', gridColumn: 'span 3'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
@@ -43,13 +84,19 @@ function UsersListComponent() {
                     <TableCell>{row.username}</TableCell>
                     <TableCell>
                         <IconButton><EmailIcon/></IconButton>
-                        {(localStorage.getItem("role") === 'ADMIN') &&<IconButton><DoDisturbIcon/></IconButton>}
+                        {(localStorage.getItem("role") === 'ADMIN') &&
+                        <Tooltip title={row.isEnabled ? "Deaktive et" : "Aktive et"}>
+                        <IconButton color={row.isEnabled ? "inherit" : "error"} 
+                        onClick={() => {row.isEnabled ? disableUser(row.id) : enableUser(row.id)}}><DoDisturbIcon/></IconButton>
+                        </Tooltip>}
                         </TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
             </Table>
         </TableContainer>
+        <UsersPaginationComponent pageCount={pageCount} page={page} handleChange={handlePageChange}/>
+        </div>
     );
 }
 

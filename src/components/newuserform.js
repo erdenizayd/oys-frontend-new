@@ -1,4 +1,5 @@
 import { TextField, Button} from "@mui/material";
+import { Box } from "@mui/system";
 import { useState } from "react";
 
 export default function NewUserFormComponent(props) {
@@ -16,39 +17,48 @@ export default function NewUserFormComponent(props) {
       }
 
     return (props.role &&
-        <div>
-            <TextField
+        <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        marginTop   : "20px",
+      }}
+      noValidate
+      autoComplete="off"
+        >
+            <div><TextField
+                margin=""
                 onChange={onFormChange}
                 required
                 name="name"
                 id="outlined-required"
                 label="İsim"
                 defaultValue=""
-            />
-            <TextField
+            /></div>
+            <div><TextField
                 onChange={onFormChange}
                 required
                 name="surname"
                 id="outlined-required"
                 label="Soyisim"
                 defaultValue=""
-            />
-            <TextField
+            /></div>
+            <div><TextField
                 onChange={onFormChange}
                 required
                 name="email"
                 id="outlined-required"
                 label="Okul Mail Adresi"
                 defaultValue="@metu.edu.tr"
-            />
-            <TextField
+            /></div>
+            <div><TextField
                 onChange={onFormChange}
                 required
                 name="username"
                 id="outlined-required"
                 label="Kullanıcı Adı"
-            />
-            <Button onClick={() => props.submit(formState)}>Submit</Button>
-        </div>
+            /></div>
+            <div><Button sx={{float: "right"}} onClick={() => props.submit(formState)}>Kullanıcı Ekle</Button></div>
+            </Box>
     );
 }
