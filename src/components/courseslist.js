@@ -4,13 +4,15 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { IconButton, Alert , Snackbar} from '@mui/material';
+import { IconButton, Alert , Snackbar, Modal} from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import React, { useContext, useEffect, useState } from "react";
 import RoleContext from '../context/rolecontext';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CourseApi from '../api/courseapi';
 import StudentApi from '../api/studentapi';
+import EditIcon from '@mui/icons-material/Edit';
+import EditCourseComponent from './editcourse';
 
 function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
@@ -47,6 +49,9 @@ function CoursesListComponent(props) {
     const [responseMessage, setResponseMessage] = useState("");
     const [courses,setCourses] = useState([]);
     const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const handleModalClose = () => setOpenModal(false);
+    const [currentCourse, setCurrentCourse] = useState('');
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -60,6 +65,11 @@ function CoursesListComponent(props) {
     useEffect(() => {
         fetchCourses();
     }, [responseMessage]);
+
+    function editCourse(courseCode) {
+        setOpenModal(true);
+        setCurrentCourse(courseCode);
+    }
 
     async function fetchCourses() {
         const response = (await courseApi.getCoursesList()).data;
@@ -109,12 +119,21 @@ function CoursesListComponent(props) {
                     <TableCell>{row.lecturerName}</TableCell>
                     <TableCell>{createCourseHours(row.courseHours)}</TableCell>
                     <TableCell>{(localStorage.getItem("role") === 'student') && <IconButton onClick={() => {handleAttend(row.code)}}><SchoolIcon/></IconButton>}
-                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {handleDelete(row.code)}}><DeleteIcon/></IconButton>}</TableCell>
+                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {handleDelete(row.code)}}><DeleteIcon/></IconButton>}
+                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {editCourse(row.code)}}><EditIcon/></IconButton>}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
             </Table>
         </TableContainer>
+        <Modal
+                open={openModal}
+                onClose={handleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                    <EditCourseComponent handleClose={handleModalClose} courseCode={currentCourse}/>
+                </Modal>  
         </div>
     );
 }

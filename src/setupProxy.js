@@ -127,4 +127,39 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    '/updateCourse/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/updateCourseDetails/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/addHomework/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/addExam/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/courses/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
 };

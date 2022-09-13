@@ -4,13 +4,15 @@ import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from "react";
 import CourseApi from "../api/courseapi";
 import AssistantApi from "../api/assistantapi";
+import EditIcon from '@mui/icons-material/Edit';
+import EditCourseTimeTableComponent from "./editcoursetimetable";
+
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
     bgcolor: 'white',
     boxShadow: 24,
     p: 4,
@@ -49,12 +51,20 @@ function createCourseHours(courseHours) {
 export default function CourseDetailsComponent(props) {
 
     const assistantApi = new AssistantApi();
+    const [response, setResponse] = useState('');
     const [open, setOpen] = useState(false);
     const [assistantName, setAssistantName] = useState("");
     const [assistants, setAssistants] = useState([]);
     const handleOpen = () => {setOpen(true);};
     const handleClose = () => setOpen(false);
+    const handleEditOpen = () => {setEditOpen(true);};
+    const handleEditClose = () => setEditOpen(false);
     const courseApi = new CourseApi();
+    const [editOpen, setEditOpen] = useState(false);
+    const [hourList,setHourList] = useState([]);
+    const [currentClass, setCurrentClass] = useState("");
+
+
     const [course,setCourse] = useState(
         {
             about: "",
@@ -80,11 +90,38 @@ export default function CourseDetailsComponent(props) {
     useEffect(() => {
         fetchCourse();
         fetchAssistants();
-    }, []);
+    }, [response]);
 
     async function fetchAssistants() {
         const response = (await assistantApi.getAssistants()).data;
         setAssistants(response);
+    }
+
+    async function handleClickEdit() {
+        const courseHoursArray = [];
+        course.courseHours.map((h) => courseHoursArray.push({first:h.dayOfWeek,second:h.hour}));
+        const request = {
+            name: course.name,
+            about: course.about,
+            type: course.type,
+            code: course.code,
+            roomName: currentClass === "" ? course.roomName : currentClass,
+            lecturerName: course.lecturerName,
+            hours: currentClass === "" ? courseHoursArray : hourList
+        }
+
+
+        const resp = (await courseApi.updateCourseDetails(props.courseCode.toUpperCase(), request)).data;
+        setResponse(resp);
+        handleEditClose();
+    }
+
+    function onFormChange(event) {
+        const newState = {...course};
+        const name = event.target.name;
+        const value = event.target.value;
+        newState[name] = value;
+        setCourse(newState);
     }
 
     async function fetchCourse() {
@@ -95,8 +132,10 @@ export default function CourseDetailsComponent(props) {
 
     return (
             <div>
+                <Button variant="contained" endIcon={<EditIcon/>} onClick={handleEditOpen}>Düzenle</Button>
+
                 <Typography>Öğretim Görevlisi</Typography>     
-                {course.lecturerName }
+                {course.lecturerName}
 
                 <Typography>Hakkında</Typography>
                 {course.about}
@@ -113,6 +152,7 @@ export default function CourseDetailsComponent(props) {
                 <Typography >Ders Asistanları</Typography>
                 <IconButton onClick={handleOpen}><AddIcon/></IconButton>
                 {course.assistantNames.length > 0 ? course.assistantNames : "Bu dersin henüz asistanı yok." }
+                
                 
 
                 <Modal
@@ -138,6 +178,43 @@ export default function CourseDetailsComponent(props) {
                     </Box>
                 </Box>
                 </Modal>  
+
+                <Modal
+                open={editOpen}
+                onClose={handleEditClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={style}>
+                    <Box sx={{ minWidth: "100%"}}>
+                    
+                    <TextField
+                        onChange={onFormChange}
+                        name="name"
+                        id="name"
+                        label="Ders Adı"
+                        defaultValue={course.name}
+                    />
+                    <TextField
+                        onChange={onFormChange}
+                        name="about"
+                        id="about"
+                        label="Hakkında"
+                        defaultValue={course.about}
+                    />
+                    <TextField
+                        onChange={onFormChange}
+                        name="code"
+                        id="code"
+                        label="Ders Kodu"
+                        defaultValue={course.code}
+                    />
+                    <EditCourseTimeTableComponent setCurrentClass={setCurrentClass} setHourList={setHourList}/>
+                    <Button onClick={handleClickEdit}>Düzenle</Button>
+                    </Box>
+                </Box>
+                </Modal>  
+
 
                 </div>
     );

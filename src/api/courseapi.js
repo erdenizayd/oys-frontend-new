@@ -19,4 +19,12 @@ export default class CourseApi {
     deleteCourse(courseCode) {
         return axios.delete("/deleteCourse/" + courseCode);
     }
+    updateCourse(courseCode, course) {
+        return axios.put("/updateCourse/" + courseCode, course);
+    }
+    updateCourseDetails(courseCode, course) {
+        console.log(course);
+        return axios.put("/updateCourseDetails/" + courseCode, course);
+    }
+
 }

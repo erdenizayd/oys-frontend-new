@@ -14,7 +14,7 @@ function ClassInfoComponent(props) {
                 {props.course.name}
             </div>
             <div className="instructor">
-                {props.course.instructor}
+                {props.course.lecturerName}
             </div> </div>}
         </div>
     );
@@ -24,10 +24,10 @@ function ClassInfoComponent(props) {
                 {props.course.code}
             </div>
             <div className="courseName">
-                {props.course.name}
+                <a href={"/my_courses/" + props.course.code.toLowerCase()}>{props.course.name}</a>
             </div>
             <div className="instructor">
-                {props.course.instructor}
+                {props.course.lecturerName}
             </div>
         </div>
     );

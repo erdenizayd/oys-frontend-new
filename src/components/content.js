@@ -8,6 +8,7 @@ import CoursesContentComponent from "./coursescontent";
 import CoursesListComponent from "./courseslist";
 import EnrollCourseComponent from "./enrollcourse";
 import GradeComponent from "./grade";
+import MyCoursesContentComponent from "./mycoursescontent";
 import CourseSearchComponent from "./searchcourse";
 import UsersContentComponent from "./userscontent";
 import UsersListComponent from "./userslist";
@@ -142,7 +143,7 @@ function ContentComponent(props) {
         return (
             <div className="content">
                 <div className="title">Kayıtlı Derslerim</div>
-                <div className="courseslist">{classes}</div>
+                <div className="courseslist"><MyCoursesContentComponent/></div>
             </div>
         )
     }
