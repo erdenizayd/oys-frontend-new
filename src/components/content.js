@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useParams } from "react-router";
 import AnnouncementComponent from "./announcement";
 import ClassesTableComponent from "./classestable";
 import ClassInfoComponent from "./classinfo";
+import CoursePageContentComponent from "./coursepagecontent";
 import CoursesContentComponent from "./coursescontent";
 import CoursesListComponent from "./courseslist";
 import EnrollCourseComponent from "./enrollcourse";
@@ -170,6 +172,13 @@ function ContentComponent(props) {
         return (
             <div className="content">
                 <ClassesTableComponent />
+            </div>
+        );
+    }
+    else if(props.page === "course") {
+        return (
+            <div className="content">
+                <CoursePageContentComponent courseCode={props.courseCode}/>
             </div>
         );
     }

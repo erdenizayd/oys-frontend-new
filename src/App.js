@@ -11,6 +11,7 @@ import GradesPageComponent from './components/gradespage';
 import ClassesPageComponent from './components/classespage';
 import RoleContext from './context/rolecontext';
 import { useState } from 'react';
+import CoursePageComponent from './components/coursepage';
 
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
         <Route path="users" element={<UsersPageComponent/>}/>
         <Route path="grades" element={<GradesPageComponent/>}/>
         <Route path="classes" element={<ClassesPageComponent/>}/>
+        <Route path="my_courses/:course" element={<CoursePageComponent/>}/>
       </Routes>
     </BrowserRouter>
     </div>

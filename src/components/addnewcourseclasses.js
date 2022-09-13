@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, Select, MenuItem, Button, Modal, Box} from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Button, Modal, Box, Snackbar, Alert} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import CourseTimeTableComponent from "./addcoursestimetable";
 import { RoomApi } from "../api/roomapi";
@@ -25,6 +25,9 @@ export default function AddNewCourseClassesTableComponent(props) {
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState('');
     const [response, setResponse] = useState({});
+    const [errorOpen, setErrorOpen] = useState(false);
+    const handleErrorClose = () => setErrorOpen(false);
+
     const [rows, setRows] = useState([
         {
             hour: "8.40",
@@ -182,9 +185,12 @@ export default function AddNewCourseClassesTableComponent(props) {
 
     const [hourList, setHourList] = useState([]);
     const [open, setOpen] = useState(false);
-    const handleOpen = () => {setOpen(true);
-    getHourList();};
+
+    const handleOpen = () => {
+        getHourList();
+    };
     const handleClose = () => setOpen(false);
+
     
 
     function createRows(course) {
@@ -224,7 +230,11 @@ export default function AddNewCourseClassesTableComponent(props) {
                 }
             }
         }
-        setHourList(newList);
+        if(newList.length === 0) setErrorOpen(true);
+        else {
+            setHourList(newList);
+            setOpen(true);
+        }
     }
 
     async function createCourse(formState) {
@@ -239,6 +249,10 @@ export default function AddNewCourseClassesTableComponent(props) {
         };
         const response = (await courseApi.createCourse(request)).data;
         setResponse(response);
+        console.log(response.message);
+        props.setValue(0);
+        
+        
     }
 
     async function fetchClasses() {
@@ -280,11 +294,16 @@ export default function AddNewCourseClassesTableComponent(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <AddNewCourseFormComponent setType={setType} type={type} submit={createCourse}/>
+                    <AddNewCourseFormComponent setType={setType} type={type} handleClose={handleClose} submit={createCourse}/>
                 </Box>
             </Modal>  
         </div>
             )}
+        <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleErrorClose}>
+        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+            Ders oluşturmak için öncelikle zaman aralığı seçmelisiniz!
+        </Alert>
+        </Snackbar>
         </div>
     );
 }

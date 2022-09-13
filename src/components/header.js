@@ -17,17 +17,15 @@ import EmailIcon from '@mui/icons-material/Email';
 
 function HeaderComponent() {
 
-    const [user,setUser] = useState('Memo Ero Aydo');
+    let navigate = useNavigate();
     const [anchorElP, setAnchorElP] = useState(null);
     const [anchorElM, setAnchorElM] = useState(null);
 
-
-    let navigate = useNavigate();
     const profileMenu = [
         {
             name: "Profili Görüntüle",
             path: "/profile"
-        }, 
+        },  
         {
             name: "Profili Düzenle",
             path: "/profileSettings"
@@ -51,6 +49,12 @@ function HeaderComponent() {
         setAnchorElP(null);
         setAnchorElM(null);
 
+    };
+
+    const handleLogOut = () => {
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        navigate("/loginn");
     };
 
     return (
@@ -79,7 +83,7 @@ function HeaderComponent() {
                 onClose={handleClose}>
                     <MenuItem onClick={handleClose}>Profili Görüntüle</MenuItem>
                     <MenuItem onClick={handleClose}>Profili Düzenle</MenuItem>
-                    <MenuItem onClick={handleClose}>Çıkış Yap</MenuItem>
+                    <MenuItem onClick={handleLogOut}>Çıkış Yap</MenuItem>
 
             </Menu>
 

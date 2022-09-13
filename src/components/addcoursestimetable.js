@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 export default function CourseTimeTableComponent(props) {
 
     function handleClick(index,secIndex,text) {
-        if(text == ""){
+        if(text === "" && index !== 4){
             let tempTable = [...props.clicked];
             tempTable[index][secIndex] = !tempTable[index][secIndex];
             props.setClicked(tempTable);

@@ -93,7 +93,7 @@ export default function AddNewCourseFormComponent(props) {
                 renderInput={(params) => <TextField {...params} label="Öğretim Görevlisi" />}
                 />
             </div>
-            <div><Button sx={{float: "right"}} onClick={() => props.submit(formState)}>Ders Ekle</Button></div>
+            <div><Button sx={{float: "right"}} onClick={() => {props.submit(formState); props.handleClose();}}>Ders Ekle</Button></div>
             </Box>
         </div>
     );

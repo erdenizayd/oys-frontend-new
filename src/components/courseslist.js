@@ -4,12 +4,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { IconButton } from '@mui/material';
+import { IconButton, Alert , Snackbar} from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import React, { useContext, useEffect, useState } from "react";
 import RoleContext from '../context/rolecontext';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CourseApi from '../api/courseapi';
+import StudentApi from '../api/studentapi';
 
 function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
@@ -29,7 +30,6 @@ function createCourseHours(courseHours) {
     
 
     for(let i = 0; i < 5; i++) {
-        console.log(schedule[i]);
         if(schedule[i].length > 0) {
             schedule[i].sort();
             returnStr = returnStr + days[i] + ": ";
@@ -42,20 +42,53 @@ function createCourseHours(courseHours) {
 }
 
 function CoursesListComponent(props) {
+    const studentApi = new StudentApi();
     const courseApi = new CourseApi();
-
+    const [responseMessage, setResponseMessage] = useState("");
     const [courses,setCourses] = useState([]);
+    const [open, setOpen] = useState(false);
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
+    
 
     useEffect(() => {
         fetchCourses();
-    }, []);
+    }, [responseMessage]);
 
     async function fetchCourses() {
         const response = (await courseApi.getCoursesList()).data;
         setCourses(response);
     }
 
+    async function handleDelete(courseCode) {
+        try{
+            const response = (await courseApi.deleteCourse(courseCode)).data;
+            setResponseMessage(response.message);
+            setOpen(true);
+
+        }
+        catch(e) {
+
+        }
+        
+    }
+
+    async function handleAttend(courseCode) {
+        const response = (await studentApi.attendCourse(courseCode,localStorage.getItem("username"))).data;
+    }
+
     return (
+        <div><Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          {responseMessage}
+        </Alert>
+      </Snackbar>
         <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
@@ -75,13 +108,14 @@ function CoursesListComponent(props) {
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.lecturerName}</TableCell>
                     <TableCell>{createCourseHours(row.courseHours)}</TableCell>
-                    <TableCell><IconButton><SchoolIcon/></IconButton>
-                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton><DeleteIcon/></IconButton>}</TableCell>
+                    <TableCell>{(localStorage.getItem("role") === 'student') && <IconButton onClick={() => {handleAttend(row.code)}}><SchoolIcon/></IconButton>}
+                    {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {handleDelete(row.code)}}><DeleteIcon/></IconButton>}</TableCell>
                     </TableRow>
                 ))}
                 </TableBody>
             </Table>
         </TableContainer>
+        </div>
     );
 }
 

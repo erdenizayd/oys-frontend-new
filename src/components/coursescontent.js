@@ -61,7 +61,7 @@ export default function CoursesContentComponent() {
                 <CoursesListComponent />        
         </TabPanel>
         <TabPanel value={value} index={1}>
-            <AddNewCourseClassesTableComponent/>
+            <AddNewCourseClassesTableComponent setValue={setValue}/>
         </TabPanel>
         </Box>
     );

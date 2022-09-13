@@ -92,4 +92,39 @@ module.exports = function(app) {
       changeOrigin: true,
     })
   );
+  app.use(
+    '/deleteCourse/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/attendCourse/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/course/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/course/{courseCode}/students/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/getAssistants',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
 };
