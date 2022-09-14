@@ -10,9 +10,9 @@ function UsersSearchComponent(props) {
             <span><TextField id="username" label="Kullanıcı Adı" variant="standard" 
             value={props.usernameSearch}
             onChange={(event) => {props.setUsernameSearch(event.target.value)}}/></span>
-            <span><Button sx={{float: "right", margin:"20px"}}
+            {localStorage.getItem("role") === 'admin' ? <span><Button sx={{float: "right", margin:"20px"}}
                     color="success"
-                    onClick={props.handleOpen} variant="contained">Yeni Kullanıcı Ekle</Button></span>
+                    onClick={props.handleOpen} variant="contained">Yeni Kullanıcı Ekle</Button></span> : ""}
         </Box>
     );
 }

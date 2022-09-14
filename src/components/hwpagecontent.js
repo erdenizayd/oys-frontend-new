@@ -1,0 +1,214 @@
+import HwApi from "../api/hwapi";
+import { Modal, Button, Box, Typography, TextField, Table, TableBody, TableContainer, TableRow, TableCell, TableHead } from "@mui/material";
+import { useEffect, useState } from "react";
+import CourseApi from "../api/courseapi";
+import HomeworkGradeChartComponent from "./homeworkgradecharts";
+import HomeworkGradeDetailsComponent from "./homeworkgradedetails";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: '5px'
+};
+
+export default function HwPageContentComponent(props) {
+    const courseApi = new CourseApi();
+    const hwApi = new HwApi();
+    const [homework, setHomework] = useState({
+        lastDate: "0.0.0000 Saat: 0.0",
+        assistantName: "",
+        isGraded: false,
+    });
+    const [evaluation, setEvaluation] = useState('');
+    const [currentStudent, setCurrentStudent] = useState('');
+    const [grade, setGrade] = useState('0');
+    const [submissions, setSubmissions] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [hwFile, setHwFile] = useState('');
+    const [about, setAbout] = useState('');
+    const [open, setOpen] = useState(false);
+
+    function handleOpen(username,studentId) {
+        setOpen(true);
+        fetchStudentSubmission(username);
+        setCurrentStudent(studentId);
+    };
+    const handleClose = () => setOpen(false);
+
+    useEffect(() => {
+        fetchHomework();
+        fetchSubmission();
+        fetchStudents();
+    },[]);
+    
+    function isExpired() {
+        const datearray = homework.lastDate.split(" ");
+        const day = datearray[0].split(".");
+        const time = datearray[2].split(".");
+        const lastd = new Date(day[2],day[1],day[0],time[0],time[1]);
+        return Date.now() >= lastd;
+    }
+
+    async function handleClick() {
+        const response = (await hwApi.getDetail(props.hwId)).data;
+        let url = window.URL.createObjectURL(new Blob([response]));
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'odev' + props.hwId + '.pdf';
+        a.click();
+    }
+
+    async function fetchHomework() {
+        const response = (await hwApi.getHomework(props.hwId)).data;
+        setHomework(response);
+    }
+
+    async function fetchSubmission() {
+        if(localStorage.getItem("role") === "student") {
+            const response = (await hwApi.getSubmission(props.hwId, localStorage.getItem("username"))).data;
+            setSubmissions(response);
+        }
+    }
+
+    async function fetchStudentSubmission(username) {
+        const response = (await hwApi.getSubmission(props.hwId, username)).data;
+        setSubmissions(response);
+    }
+    
+    async function handleSubmission(id) {
+        const response = (await hwApi.getSubmissionFile(props.hwId,id)).data;
+        let url = window.URL.createObjectURL(new Blob([response]));
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = 'odev' + props.hwId + 'teslim' + '.pdf';
+        a.click();
+    }
+
+    async function handleSubmit() {
+        const formData = new FormData();
+        formData.append('file',hwFile);
+        formData.append('details', about);
+        formData.append('username', localStorage.getItem("username"));
+
+        const response = (await hwApi.submitHomework(props.hwId,formData)).data;
+    }
+
+    async function fetchStudents() {
+        if(localStorage.getItem("role") !== "student") {
+            const response = (await courseApi.getCourseStudents(props.courseCode.toUpperCase())).data;
+            setStudents(response);
+        }
+    }
+
+    async function handleEvaluation() {
+        const request = {
+            grade: grade,
+            evaluation: evaluation
+        };
+        const response = (await hwApi.evaluateHomework(props.hwId, currentStudent, request)).data;
+        console.log(response);
+    }
+
+    return (
+        <div style={{gridColumn: 'span 3'}}>
+            <Box>
+            <Typography>Ödevden sorumlu asistan: {homework.assistantName}</Typography>
+            <Typography>Ödevin son teslim tarihi: {homework.lastDate}</Typography>
+            <Button onClick={handleClick}>Ödev Detayları</Button>
+            </Box>
+            {localStorage.getItem("role") === "student" ?<div>
+            
+            {homework.isGraded ? <Box>
+                <HomeworkGradeDetailsComponent hwId={props.hwId}/>
+                <HomeworkGradeChartComponent hwId={props.hwId} />
+            </Box> : <Box><Box>
+                <input type="file" onChange={(e) => setHwFile(e.target.files[0])} disabled={isExpired()}/>
+                <TextField
+                onChange={(e) => setAbout(e.target.value)}
+                disabled={isExpired()}
+                id="about"
+                label="Açıklama"
+                multiline
+                rows={4}
+                />
+                <Button disabled={isExpired()} onClick={handleSubmit}>Yükle</Button>
+            </Box>
+            <Box>
+                {(submissions.length === 0) ? "Henüz ödev teslimi yapmadınız." : 
+                submissions.map((r) => {
+                    return <div>
+                        {r.submissionId}
+                        <Button onClick={() => handleSubmission(r.submissionId)}>İndir</Button>
+                        {r.details}
+                    </div>
+                })}
+            </Box></Box>} </div>
+            : <Box>
+                <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px', gridColumn: 'span 3'}} >
+            <Table sx={{ }} aria-label="simple table">
+                <TableHead>
+                    <TableRow >
+                        <TableCell sx={{ width: '90%' }}>Öğrenci Adı</TableCell>
+                        <TableCell></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {students.map((row) => (
+                    <TableRow>
+                    <TableCell>
+                        <Typography>{row.name}</Typography>
+                    </TableCell>
+                    <TableCell>
+                        <Button onClick={() => handleOpen(row.username, row.studentId)}>Detay</Button>
+                    </TableCell>
+                    </TableRow>
+                ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+
+        <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                
+            <Box sx={style}>
+                {submissions.map((r) => {
+                    return <div>
+                        {r.submissionId}
+                        <Button onClick={() => handleSubmission(r.submissionId)}>İndir</Button>
+                        {r.details}
+                    </div>
+                })}
+                <TextField
+                    onChange={(e) => setGrade(e.target.value)}
+                    id="grade"
+                    label="Not"
+                    type="number"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    />
+                    <TextField
+                    onChange={(e) => setEvaluation(e.target.value)}
+                    id="about"
+                    label="Değerlendirme"
+                    multiline
+                    rows={4}
+                    />
+                    <Button onClick={handleEvaluation}>Not Ekle</Button>
+            </Box>
+            </Modal>  
+
+            </Box>}
+        </div>
+    );
+}

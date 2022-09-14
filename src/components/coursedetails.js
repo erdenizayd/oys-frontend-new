@@ -132,28 +132,61 @@ export default function CourseDetailsComponent(props) {
 
     return (
             <div>
-                <Button variant="contained" endIcon={<EditIcon/>} onClick={handleEditOpen}>Düzenle</Button>
+                {localStorage.getItem("role") === 'student' ?
+                 <Button sx={{float: 'right'}} variant="contained" endIcon={<EditIcon/>} onClick={handleEditOpen}>Düzenle</Button>
+                : ""}
 
-                <Typography>Öğretim Görevlisi</Typography>     
-                {course.lecturerName}
-
+                <Box sx={{
+                    width: '100%',
+                    display: 'grid',
+                    gridTemplateColumns: ' auto auto'
+                }}>
+                <Box  sx={{
+                    gridColumn:"span 2",
+                    borderStyle: "solid",
+                    borderWidth: "1px",
+                    padding: 2,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'
+                }}>
+                <span>
+                <Typography>Öğretim Görevlisi: {course.lecturerName}</Typography>     
+                
+                <Typography>Ders Tipi: {course.type.charAt(0) + course.type.slice(1).toLocaleLowerCase()}</Typography>
+                </span>
                 <Typography>Hakkında</Typography>
                 {course.about}
 
-                <Typography>Ders Tipi</Typography>
-                {course.type}
-
+                
+                </Box>
+                <Box  sx={{
+                    gridColumn:"span 1",
+                    borderStyle: "solid",
+                    borderWidth: "1px",
+                    padding: 2,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'
+                }}>
                 <Typography>Sınıf</Typography>
                 {course.roomName}
 
                 <Typography>Ders Saatleri</Typography>
                 {createCourseHours(course.courseHours)}
-
-                <Typography >Ders Asistanları</Typography>
-                <IconButton onClick={handleOpen}><AddIcon/></IconButton>
+                </Box>
+                <Box  sx={{
+                    gridColumn:"span 1",
+                    borderStyle: "solid",
+                    borderWidth: "1px",
+                    padding: 2,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'
+                }}>
+                <Typography >Ders Asistanları 
+                    <IconButton sx={{float: 'right'}} onClick={handleOpen}><AddIcon/></IconButton></Typography>
+                
                 {course.assistantNames.length > 0 ? course.assistantNames : "Bu dersin henüz asistanı yok." }
-                
-                
+                </Box>
+                </Box>
 
                 <Modal
                 open={open}

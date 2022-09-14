@@ -1,4 +1,4 @@
-import { IconButton, Typography, Button, Modal, Box } from "@mui/material";
+import { IconButton, Typography, Button, Modal, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import CourseApi from "../api/courseapi";
 import AddIcon from '@mui/icons-material/Add';
@@ -45,14 +45,53 @@ export default function CourseAssignmentsComponent(props) {
     }
 
     return (
-            <div>
-                <Button onClick={handleExamOpen} endIcon={<AddIcon/>}>Sınav Ekle</Button>
-                <Typography>Sınavlar</Typography>     
-                {course.exams.length > 0 ? course.exams : "Şu anda dersin eklenmiş bir sınavı yok."}
-                <Button onClick={handleHwOpen} endIcon={<AddIcon/>}>Ödev Ekle</Button>
-                <Typography>Ödevler</Typography>     
-                {course.homeworks.length > 0 ? course.homeworks : "Şu anda dersin eklenmiş bir ödevi yok."}
-            
+            <div><Box >
+                <Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button>
+                {course.exams.length > 0 ?
+                <TableContainer sx={{width: '100%', gridColumn: 'span 3'}} >
+                <Table sx={{ }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow >
+                            <TableCell sx={{ width: '40%' }}>Sınav</TableCell>
+                            <TableCell sx={{ width: '30%' }}>Tarih</TableCell>
+                            <TableCell sx={{ width: '30%' }}>Sınıf</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {course.exams.map((row) => (
+                        <TableRow>
+                        <TableCell><a style={{textDecoration: "none"}} href={"/my_courses/" + props.courseCode + "/exam/" + row.id}>{row.name}</a></TableCell>
+                        <TableCell>{row.date}</TableCell>
+                        <TableCell>{row.roomName}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer> : "Şu anda dersin eklenmiş bir sınavı yok."}
+                </Box>
+                <Box  sx={{marginTop:'20px'}}>
+                <Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button>
+                {course.homeworks.length > 0 ? <TableContainer sx={{width: '100%', gridColumn: 'span 3'}} >
+                <Table sx={{ }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow >
+                            <TableCell sx={{ width: '30%' }}>Ödev</TableCell>
+                            <TableCell sx={{ width: '30%' }}>Tarih</TableCell>
+                            <TableCell sx={{ width: '40%' }}>Sorumlu Asistan</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {course.homeworks.map((row) => (
+                        <TableRow>
+                        <TableCell><a href={"/my_courses/" + props.courseCode + "/hw/" + row.id}>{"Ödev" + row.id}</a></TableCell>
+                        <TableCell>{row.date}</TableCell>
+                        <TableCell>{row.assistantName}</TableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer> : "Şu anda dersin eklenmiş bir ödevi yok."}
+            </Box>
                 <Modal
                 open={examOpen}
                 onClose={handleExamClose}
@@ -60,7 +99,7 @@ export default function CourseAssignmentsComponent(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <NewExamFormComponent courseCode={props.courseCode} />
+                    <NewExamFormComponent handleClose={handleExamClose} courseCode={props.courseCode} />
                 </Box>
                 </Modal>  
 
@@ -71,7 +110,7 @@ export default function CourseAssignmentsComponent(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <NewHwFormComponent courseCode={props.courseCode} />
+                    <NewHwFormComponent handleClose={handleHwClose} courseCode={props.courseCode} />
                 </Box>
                 </Modal>  
             </div>

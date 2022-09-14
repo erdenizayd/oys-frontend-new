@@ -50,13 +50,13 @@ export default function CourseStudentsComponent(props) {
                         <Typography>
                             {row.examGrades.map(
                                 (examRow) => {
-                                    return (examRow.exam.name + " " + examRow.grade);
+                                    return (examRow.grade);
                                 }
                             )}
 
                             {row.homeworkGrades.map(
                                 (homeworkRow) => {
-                                    return (homeworkRow.exam.name + " " + homeworkRow.grade);
+                                    return (homeworkRow.grade);
                                 }
                             )}
                         </Typography>

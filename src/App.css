@@ -174,7 +174,6 @@ html {
 }
 
 .content .title {
-  padding-bottom: 10px;
   grid-column: span 3;
   border-bottom: 2px solid #2F9C95;
 }

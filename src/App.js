@@ -12,6 +12,8 @@ import ClassesPageComponent from './components/classespage';
 import RoleContext from './context/rolecontext';
 import { useState } from 'react';
 import CoursePageComponent from './components/coursepage';
+import ExamPageComponent from './components/exampage';
+import HwPageComponent from './components/hwpage';
 
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
         <Route path="grades" element={<GradesPageComponent/>}/>
         <Route path="classes" element={<ClassesPageComponent/>}/>
         <Route path="my_courses/:course" element={<CoursePageComponent/>}/>
+        <Route path="my_courses/:course/exam/:exam" element={<ExamPageComponent/>}/>
+        <Route path="my_courses/:course/hw/:hw" element={<HwPageComponent/>}/>
       </Routes>
     </BrowserRouter>
     </div>

@@ -45,6 +45,7 @@ export default function NewHwFormComponent(props) {
         formData.append('courseCode', props.courseCode.toUpperCase());
 
         const response = (await hwApi.addHomework(formData)).data;
+        props.handleClose();
         console.log(response);
     }
 

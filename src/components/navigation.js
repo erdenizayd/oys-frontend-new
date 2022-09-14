@@ -14,11 +14,7 @@ function NavigationComponent() {
                     () => (
                         location.pathname === "/" ? "navactive" : "nav"
                         )}>Anasayfa</NavLink>
-                <NavLink to="/announcements" className={
-                    () => (
-                        location.pathname === "/announcements" ? "navactive" : "nav"
-                    )}>Duyurular</NavLink>
-                {<NavLink to="/my_courses" className={
+                {localStorage.getItem("role") === 'admin' ? "" : <NavLink to="/my_courses" className={
                     () => (
                         location.pathname === "/my_courses" ? "navactive" : "nav"
                     )}>Kayıtlı Derslerim</NavLink>}
@@ -30,10 +26,6 @@ function NavigationComponent() {
                     () => (
                         location.pathname === "/users" ? "navactive" : "nav"
                     )}>Kullanıcılar</NavLink>
-                <NavLink to="/grades" className={
-                    () => (
-                        location.pathname === "/grades" ? "navactive" : "nav"
-                    )}>Notlarım</NavLink>
                 <NavLink to="/classes" className={
                     () => (
                         location.pathname === "/classes" ? "navactive" : "nav"

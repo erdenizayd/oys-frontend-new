@@ -38,7 +38,7 @@ export default function NewExamFormComponent(props) {
         }
         
         const response = (await examApi.addExam(request)).class;
-
+        props.handleClose();
         console.log(response.message);
 
     }
