@@ -45,7 +45,7 @@ export default function ExamGradeChartComponent(props) {
 
     
 
-    const labels = ['<10', '<20', '<30', '<40', '<50', '<60', '<70', '<80', '<90', '<100'];
+    const labels = ['<10', '<20', '<30', '<40', '<50', '<60', '<70', '<80', '<90', '<100', '100'];
 
     const data = {
         labels,
@@ -67,5 +67,5 @@ export default function ExamGradeChartComponent(props) {
         },
     };
 
-    return <div style={{width:'60%'}}><Bar options={options} data={data} /></div>
+    return <div style={{margin:'auto', width:'60%'}}><Bar options={options} data={data} /></div>
 }

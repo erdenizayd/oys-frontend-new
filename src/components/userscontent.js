@@ -17,8 +17,45 @@ const style = {
     borderRadius: '5px'
   };
 
+  function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+}
+  
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+
 export default function UsersContentComponent() {
-    
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     const [response, setResponse] = useState('');
     const [open, setOpen] = useState(false);
     const handleOpen = () => {setOpen(true); setResponse();};
@@ -28,7 +65,15 @@ export default function UsersContentComponent() {
 
     return (
         <Box sx={{ width: '100%' , gridColumn: 'span 3'}}>
-            <div className="title">Kullanıcılar</div>
+                        <Box sx={{ width: '100%' , gridColumn: 'span 3'}}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
+            <Tabs sx={{gridColumn: 'span 2'}}value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Kullanıcılar" {...a11yProps(0)} />
+
+            </Tabs>
+            </Box>
+            <TabPanel value={value} index={0}>
+            
             <UsersSearchComponent handleOpen={handleOpen}
             nameSearch={nameSearch}
             usernameSearch={usernameSearch} 
@@ -47,6 +92,11 @@ export default function UsersContentComponent() {
                     <AddNewUserComponent setOpen={setOpen} response={response} setResponse={setResponse}/>        
                 </Box>
             </Modal>  
+
+            </TabPanel>
+
+            </Box>
+            
         </Box>
     );
 }

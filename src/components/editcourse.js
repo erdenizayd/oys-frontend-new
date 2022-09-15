@@ -1,5 +1,6 @@
 import { TextField, Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import CourseApi from "../api/courseapi";
 
 const style = {
@@ -47,8 +48,29 @@ export default function EditCourseComponent(props) {
     }
 
     async function handleClick() {
-        const response = (await courseApi.updateCourse(props.courseCode.toUpperCase(), course)).data;
-        console.log(response.message);
+        try {
+            const response = (await courseApi.updateCourse(props.courseCode.toUpperCase(), course)).data;
+            toast.success(response.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });            
+    }
+    catch(e) {
+        toast.error("Ders silinemedi.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });  
+    }
         props.handleClose();
     }
     

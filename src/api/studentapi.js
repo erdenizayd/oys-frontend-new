@@ -7,4 +7,7 @@ export default class StudentApi {
     getCourses() {
         return axios.get("/courses/" + localStorage.getItem("username"));
     }
+    getImportantDates() {
+        return axios.get("/getDates/" + localStorage.getItem("username"));
+    }
 }

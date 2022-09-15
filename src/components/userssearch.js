@@ -1,6 +1,7 @@
 import { TextField, Button, Box } from "@mui/material";
 
 function UsersSearchComponent(props) {
+    console.log(localStorage.getItem('role'));
     return (
         <Box sx={{marginTop: '20px'}}>
             <span><TextField id="name" label="İsim" variant="standard"  
@@ -10,7 +11,7 @@ function UsersSearchComponent(props) {
             <span><TextField id="username" label="Kullanıcı Adı" variant="standard" 
             value={props.usernameSearch}
             onChange={(event) => {props.setUsernameSearch(event.target.value)}}/></span>
-            {localStorage.getItem("role") === 'admin' ? <span><Button sx={{float: "right", margin:"20px"}}
+            {localStorage.getItem("role") === 'ADMIN' ? <span><Button sx={{float: "right", margin:"20px"}}
                     color="success"
                     onClick={props.handleOpen} variant="contained">Yeni Kullanıcı Ekle</Button></span> : ""}
         </Box>

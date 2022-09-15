@@ -23,6 +23,7 @@ function ContentComponent(props) {
     if(props.page === "homepage") {
         return (        
             <div className="content">
+                <div style={{minHeight: "500px"}}></div>
             </div>
         );
     }
@@ -60,7 +61,7 @@ function ContentComponent(props) {
     }
     else if(props.page === "classes") {
         return (
-            <div className="content">
+            <div className="content"  style={{minHeight: "500px"}}>
                 <ClassesTableComponent />
             </div>
         );

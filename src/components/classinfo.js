@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 function ClassInfoComponent(props) {
 
     const [sx, setSx] = useState({
+        marginBottom: "20px",
         backgroundColor: "#DEE3E3",
         borderRadius: "7px",
         padding: 2,

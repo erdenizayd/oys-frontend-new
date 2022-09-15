@@ -20,7 +20,7 @@ export default function CourseTimeTableComponent(props) {
     }
 
     return (
-        <TableContainer component={Paper} sx={{width: '90%', margin: 'auto', marginTop: '20px'}} >
+        <TableContainer component={Paper} sx={{width: '100%', margin: 'auto', marginTop: '20px'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
                     <TableRow >
@@ -38,24 +38,24 @@ export default function CourseTimeTableComponent(props) {
                     >
                     <TableCell>{row.hour}</TableCell>
                     <TableCell sx={props.clicked[index][0] ? 
-                        {backgroundColor: "black"} :
+                        {backgroundColor: "#2F9C95"} :
                         {}} onClick={() => handleClick(index,0, row.monday)}>
                             {row.monday == "" ? "" : row.monday}
                         </TableCell>
                     <TableCell sx={props.clicked[index][1] ? 
-                        {backgroundColor: "black"} :
+                        {backgroundColor: "#2F9C95"} :
                         {}} onClick={() => handleClick(index,1,row.tuesday)}>
                             {row.tuesday == "" ? "": row.tuesday}</TableCell>
                     <TableCell sx={props.clicked[index][2] ? 
-                        {backgroundColor: "black"} :
+                        {backgroundColor: "#2F9C95"} :
                         {}} onClick={() => handleClick(index,2,row.wednesday)}>
                             {row.wednesday == "" ? "": row.wednesday}</TableCell>
                     <TableCell sx={props.clicked[index][3] ? 
-                        {backgroundColor: "black"} :
+                        {backgroundColor: "#2F9C95"} :
                         {}} onClick={() => handleClick(index,3,row.thursday)}>
                             {row.thursday == "" ? "": row.thursday}</TableCell>
                     <TableCell sx={props.clicked[index][4] ? 
-                        {backgroundColor: "black"} :
+                        {backgroundColor: "#2F9C95"} :
                         {}} onClick={() => handleClick(index,4,row.friday)}>
                             {row.friday == "" ? "": row.friday}</TableCell>
                     </TableRow>

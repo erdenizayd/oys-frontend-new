@@ -53,7 +53,7 @@ export default function CoursesContentComponent() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Tüm Dersler" {...a11yProps(0)} />
-            {localStorage.getItem("role") === 'admin' ? <Tab label="Yeni Ders Ekle" {...a11yProps(1)} />: ""}
+            {localStorage.getItem("role") === 'ADMIN' ? <Tab label="Yeni Ders Ekle" {...a11yProps(1)} />: ""}
             </Tabs>
         </Box>
         <TabPanel value={value} index={0}>

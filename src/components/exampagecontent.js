@@ -5,6 +5,7 @@ import ExamApi from "../api/examapi";
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import ExamGradeChartComponent from "./examgradecharts";
 import ExamGradeDetailComponent from "./examgradedetails";
+import { toast } from "react-toastify";
 
 const style = {
     position: 'absolute',
@@ -17,7 +18,7 @@ const style = {
     p: 4,
     borderRadius: '5px'
 };
-
+ 
 export default function ExamPageContentComponent(props) {
     const examApi = new ExamApi();
     const courseApi = new CourseApi();
@@ -46,6 +47,16 @@ export default function ExamPageContentComponent(props) {
         fetchStudents();
     }, []);
 
+    function getGrade(grades) {
+        if(grades.length === 0) return "Notlandırılmadı";
+        for(let i = 0; i < grades.length; i++) {
+            if(grades[i].examId === Number(props.examId)) {
+                if(grades[i].grade === -1) return "Notlandırılmadı";
+                else return grades[i].grade;
+            }
+        }
+    }
+
     async function fetchExam() {
         const response = (await examApi.getExam(props.examId)).data;
         setExam(response);
@@ -64,31 +75,83 @@ export default function ExamPageContentComponent(props) {
             evaluation: evaluation
         };
         const response = (await examApi.evaluateExam(props.examId, currentStudent, request)).data;
-        console.log(response);
+        handleClose();
+        toast.success(response.message,{
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
     }
 
     return (
         <div style={{gridColumn: 'span 3'}}>
-            <Box>
+            <Box sx={{
+                    backgroundColor: "#F4F6F6",
+                    gridColumn:"span 2",
+                    borderStyle: "solid #D2DADA",
+                    borderWidth: "1px",
+                    padding: 3,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'}}>
+                <div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Sınav Adı: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{exam.name}</Typography>     
+                </div><div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Sınav Tarihi </Typography><Typography sx={{
+                    display: "inline"
+                }}>{exam.date}</Typography>     
+                </div><div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Sınav Yeri: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{exam.roomName}</Typography>     
+                </div><div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Genel Bilgiler: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{exam.details}</Typography>     
+                </div>
 
-                <Typography>{exam.name}</Typography>
-                <Typography>Tarih: {exam.date}</Typography>
-                <Typography>Sınıf: {exam.roomName}</Typography>
-                <Typography>Genel Bilgiler: {exam.details}</Typography>
-
-            </Box>
-            {(localStorage.getItem("role") == 'student') ?
-                (exam.isGraded ? <Box>
+            </Box >
+            {(localStorage.getItem("role") == 'STUDENT') ?
+                (exam.isGraded ? <Box sx={{
+                    backgroundColor: "#F4F6F6",
+                    gridColumn:"span 2",
+                    borderStyle: "solid #D2DADA",
+                    borderWidth: "1px",
+                    padding: 3,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'}}>
                     <ExamGradeDetailComponent examId={props.examId} />
                     <ExamGradeChartComponent examId={props.examId} />
                 </Box> 
-                : "Sınavınız henüz notlandırılmadı.") 
+                : "Sınav henüz notlandırılmadı.") 
                 : <Box sx={{ width: "100%" , gridColumn: 'span 3', margin: 'auto'}}>
                     <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px', gridColumn: 'span 3'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
                     <TableRow >
                         <TableCell sx={{ width: '90%' }}>Öğrenci Adı</TableCell>
+                        <TableCell>Not</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -97,6 +160,9 @@ export default function ExamPageContentComponent(props) {
                     <TableRow>
                     <TableCell>
                         <Typography>{row.name}</Typography>
+                    </TableCell>
+                    <TableCell>
+                        <Typography>{getGrade(row.examGrades)}</Typography>
                     </TableCell>
                     <TableCell>
                         <IconButton onClick={() => {handleOpen(row.studentId)}}><AddTaskIcon/></IconButton>
@@ -115,7 +181,9 @@ export default function ExamPageContentComponent(props) {
             >
                 
             <Box sx={style}>
+                <Typography align="center">Sınavı Notlandır</Typography>
                 <TextField
+                    sx={{marginBottom: '20px', width: '100%', marginTop: '20px'}}
                     onChange={(e) => setGrade(e.target.value)}
                     id="grade"
                     label="Not"
@@ -125,13 +193,14 @@ export default function ExamPageContentComponent(props) {
                     }}
                     />
                     <TextField
+                    sx={{marginBottom: '20px', width: '100%'}}
                     onChange={(e) => setEvaluation(e.target.value)}
                     id="about"
                     label="Değerlendirme"
                     multiline
                     rows={4}
                     />
-                    <Button onClick={handleEvaluation}>Not Ekle</Button>
+                    <Button variant='contained' sx={{width: '100%'}}onClick={handleEvaluation}>Not Ekle</Button>
             </Box>
             </Modal>  
                 </Box>

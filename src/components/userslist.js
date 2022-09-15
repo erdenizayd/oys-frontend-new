@@ -10,6 +10,7 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import React, { useContext, useEffect, useState } from "react";
 import UserApi from '../api/userapi';
 import UsersPaginationComponent from './userspagination';
+import { toast } from 'react-toastify';
 
 function UsersListComponent(props) {
 
@@ -58,11 +59,29 @@ function UsersListComponent(props) {
     async function disableUser(id) {
         const response = (await userApi.disableUser(id)).data;
         setIsUpdated(!isUpdated);
+        toast.success("Kullanıcı hesabı deaktive edildi.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            })
     }
 
     async function enableUser(id) {
         const response = (await userApi.enableUser(id)).data;
         setIsUpdated(!isUpdated);
+        toast.success("Kullanıcı hesabı aktive edildi.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            })
     }
 
 

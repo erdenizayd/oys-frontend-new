@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import HwApi from "../api/hwapi";
@@ -35,10 +36,40 @@ export default function HomeworkGradeDetailsComponent(props) {
 
     return (
         <Box>
-            Notunuz: {grade.grade}
-            Not Ortalaması: {average}
-            Standart Sapma: {std}
-            Değerlendirme: {grade.evaluation}
+            <div style={{marginBottom: '10px'}}>
+            <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Notunuz: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{grade.grade}</Typography>     
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Not Ortalaması: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{average}</Typography>     
+                </div><div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Standart Sapma: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{std}</Typography>     
+                </div><div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Değerlendirme:</Typography><Typography sx={{
+                    display: "inline"
+                }}>{grade.evaluation}</Typography>     
+                </div>
         </Box>
     );
 

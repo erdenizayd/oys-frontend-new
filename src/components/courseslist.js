@@ -13,6 +13,7 @@ import CourseApi from '../api/courseapi';
 import StudentApi from '../api/studentapi';
 import EditIcon from '@mui/icons-material/Edit';
 import EditCourseComponent from './editcourse';
+import { toast } from 'react-toastify';
 
 function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
@@ -80,25 +81,58 @@ function CoursesListComponent(props) {
         try{
             const response = (await courseApi.deleteCourse(courseCode)).data;
             setResponseMessage(response.message);
-            setOpen(true);
-
+            toast.success(response.message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });            
         }
         catch(e) {
-
+            toast.error("Ders silinemedi.", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });  
         }
         
     }
 
     async function handleAttend(courseCode) {
+        try{
         const response = (await studentApi.attendCourse(courseCode,localStorage.getItem("username"))).data;
+        toast(response.message, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+        }
+        catch(e) {
+            toast.error("Bu derse kayıt olamazsınız.", {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        }
     }
 
     return (
-        <div><Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          {responseMessage}
-        </Alert>
-      </Snackbar>
+        <div>
         <TableContainer sx={{width: '100%', margin: 'auto', marginTop: '20px'}} >
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
@@ -118,7 +152,7 @@ function CoursesListComponent(props) {
                     <TableCell>{row.name}</TableCell>
                     <TableCell>{row.lecturerName}</TableCell>
                     <TableCell>{createCourseHours(row.courseHours)}</TableCell>
-                    <TableCell>{(localStorage.getItem("role") === 'student') && <IconButton onClick={() => {handleAttend(row.code)}}><SchoolIcon/></IconButton>}
+                    <TableCell>{(localStorage.getItem("role") === 'STUDENT') && <IconButton onClick={() => {handleAttend(row.code)}}><SchoolIcon/></IconButton>}
                     {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {handleDelete(row.code)}}><DeleteIcon/></IconButton>}
                     {(localStorage.getItem("role") === 'ADMIN') && <IconButton onClick={() => {editCourse(row.code)}}><EditIcon/></IconButton>}</TableCell>
                     </TableRow>

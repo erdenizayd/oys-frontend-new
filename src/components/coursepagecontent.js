@@ -53,7 +53,6 @@ export default function CoursePageContentComponent(props) {
         setValue(newValue);
     };
 
-    function handleClick() {}
 
     useEffect(() => {
         fetchCourse();
@@ -72,9 +71,7 @@ export default function CoursePageContentComponent(props) {
             <Tabs sx={{gridColumn: 'span 2'}}value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Ders Bilgileri" {...a11yProps(0)} />
             <Tab label="Ödev ve Sınavlar" {...a11yProps(1)} />
-            <Tab label="Duyurular" {...a11yProps(2)} />
-            <Tab label="Öğrenci Listesi" {...a11yProps(3)} />
-            <Tab label="Not Bilgisi" {...a11yProps(4)} />
+            
 
             </Tabs>
             </Box>
@@ -87,15 +84,9 @@ export default function CoursePageContentComponent(props) {
             <TabPanel value={value} index={1}>
                 <CourseAssignmentsComponent courseCode={props.courseCode}/>
             </TabPanel>
-            <TabPanel value={value} index={2}>
-                <CourseAnnouncementsComponent courseCode={props.courseCode}/>
-            </TabPanel>
-            <TabPanel value={value} index={3}>  
-                <CourseStudentsComponent courseCode={props.courseCode}/>
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                
-            </TabPanel>
+
+            
+
             </Box>
         </div>
     );

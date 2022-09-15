@@ -1,4 +1,4 @@
-import { TextField, Button, Select, InputLabel, MenuItem, Autocomplete} from "@mui/material";
+import { TextField, Button, Select, InputLabel, MenuItem, Autocomplete, Typography} from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import UserApi from "../api/userapi";
@@ -34,11 +34,12 @@ export default function AddNewCourseFormComponent(props) {
             <Box
       component="form"
       sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
         marginTop   : "20px",
       }}
         >
+            <Typography sx={{marginBottom: '20px'}} >Ders Ekle</Typography>
             <div><TextField
+                sx={{marginBottom: '20px'}}
                 onChange={onFormChange}
                 required
                 name="name"
@@ -47,6 +48,7 @@ export default function AddNewCourseFormComponent(props) {
                 defaultValue=""
             /></div>
             <div><TextField
+            sx={{marginBottom: '20px'}}
                 onChange={onFormChange}
                 required
                 name="about"
@@ -57,6 +59,7 @@ export default function AddNewCourseFormComponent(props) {
             <div>
             <InputLabel id="course-type">Ders Tipi</InputLabel>
             <Select
+            sx={{marginBottom: '20px', width:'200px'}}
             name="type"
             labelId="course-type-label"
             id="course-type"
@@ -70,6 +73,7 @@ export default function AddNewCourseFormComponent(props) {
             </Select>
             </div>
             <div><TextField
+            sx={{marginBottom: '20px'}}
                 onChange={onFormChange}
                 required
                 name="code"
@@ -79,6 +83,7 @@ export default function AddNewCourseFormComponent(props) {
             /></div>
             <div>
             <Autocomplete
+            
                 inputValue={lecturerName}
                 onInputChange={(e,value) => {
                     setLecturerName(value);
@@ -89,7 +94,7 @@ export default function AddNewCourseFormComponent(props) {
                 name="lecturerName"
                 id="lecturerName"
                 options={lecturers}
-                sx={{ width: 300 }}
+                sx={{ width: 300, marginBottom: '20px'}}
                 renderInput={(params) => <TextField {...params} label="Öğretim Görevlisi" />}
                 />
             </div>

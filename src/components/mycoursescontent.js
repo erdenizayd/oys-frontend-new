@@ -56,15 +56,15 @@ export default function MyCoursesContentComponent() {
     });
 
     async function fetchCourses() {
-        if(localStorage.getItem("role") === 'student') {
+        if(localStorage.getItem("role") === 'STUDENT') {
             const response = (await studentApi.getCourses()).data;
             setCourses(response);
         }
-        else if(localStorage.getItem("role") === 'assistant') {
+        else if(localStorage.getItem("role") === 'ASSISTANT') {
             const response = (await assistantApi.getCourses()).data;
             setCourses(response);
         }
-        else if(localStorage.getItem("role") === 'lecturer') {
+        else if(localStorage.getItem("role") === 'LECTURER') {
             const response = (await lecturerApi.getCourses()).data;
             setCourses(response);
         }

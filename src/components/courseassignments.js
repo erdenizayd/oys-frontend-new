@@ -20,6 +20,7 @@ const style = {
 export default function CourseAssignmentsComponent(props) {
     const [examOpen, setExamOpen] = useState(false);
     const [hwOpen, setHwOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
     const handleExamOpen = () => {setExamOpen(true);};
     const handleExamClose = () => setExamOpen(false);
     const handleHwOpen = () => setHwOpen(true);
@@ -36,7 +37,9 @@ export default function CourseAssignmentsComponent(props) {
 
     useEffect(() => {
         fetchCourse();
-    }, []);
+    }, [refresh]);
+
+    const handleRefresh = () => setRefresh(!refresh);
 
     async function fetchCourse() {
         const response = (await courseApi.getCourse(props.courseCode.toUpperCase())).data;
@@ -45,16 +48,25 @@ export default function CourseAssignmentsComponent(props) {
     }
 
     return (
-            <div><Box >
-                <Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button>
+            <div><Box sx={{
+                backgroundColor: "#F4F6F6",
+                gridColumn:"span 2",
+                borderStyle: "solid #D2DADA",
+                borderWidth: "1px",
+                padding: 3,
+                margin: '10px 0 10px 0',
+                borderRadius: '3px'
+            }}>
+                
                 {course.exams.length > 0 ?
                 <TableContainer sx={{width: '100%', gridColumn: 'span 3'}} >
                 <Table sx={{ }} aria-label="simple table">
                     <TableHead>
                         <TableRow >
                             <TableCell sx={{ width: '40%' }}>Sınav</TableCell>
-                            <TableCell sx={{ width: '30%' }}>Tarih</TableCell>
-                            <TableCell sx={{ width: '30%' }}>Sınıf</TableCell>
+                            <TableCell sx={{ width: '20%' }}>Tarih</TableCell>
+                            <TableCell sx={{ width: '20%' }}>Sınıf</TableCell>
+                            <TableCell sx={{width:'20%'}}><Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -67,17 +79,27 @@ export default function CourseAssignmentsComponent(props) {
                     ))}
                     </TableBody>
                 </Table>
-            </TableContainer> : "Şu anda dersin eklenmiş bir sınavı yok."}
+            </TableContainer> : <span>Şu anda dersin eklenmiş bir sınavı yok.
+            <Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button></span>}
                 </Box>
-                <Box  sx={{marginTop:'20px'}}>
-                <Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button>
+                <Box  sx={{
+                    backgroundColor: "#F4F6F6",
+                    gridColumn:"span 2",
+                    borderStyle: "solid #D2DADA",
+                    borderWidth: "1px",
+                    padding: 3,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'
+                }}>
+
                 {course.homeworks.length > 0 ? <TableContainer sx={{width: '100%', gridColumn: 'span 3'}} >
                 <Table sx={{ }} aria-label="simple table">
                     <TableHead>
                         <TableRow >
                             <TableCell sx={{ width: '30%' }}>Ödev</TableCell>
-                            <TableCell sx={{ width: '30%' }}>Tarih</TableCell>
-                            <TableCell sx={{ width: '40%' }}>Sorumlu Asistan</TableCell>
+                            <TableCell sx={{ width: '20%' }}>Tarih</TableCell>
+                            <TableCell sx={{ width: '30%' }}>Sorumlu Asistan</TableCell>
+                            <TableCell sx={{ width: '20%' }}><Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -90,7 +112,8 @@ export default function CourseAssignmentsComponent(props) {
                     ))}
                     </TableBody>
                 </Table>
-            </TableContainer> : "Şu anda dersin eklenmiş bir ödevi yok."}
+            </TableContainer> : <span>Şu anda dersin eklenmiş bir ödevi yok.
+            <Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button></span>}
             </Box>
                 <Modal
                 open={examOpen}
@@ -99,7 +122,7 @@ export default function CourseAssignmentsComponent(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <NewExamFormComponent handleClose={handleExamClose} courseCode={props.courseCode} />
+                    <NewExamFormComponent refresh={handleRefresh} handleClose={handleExamClose} courseCode={props.courseCode} />
                 </Box>
                 </Modal>  
 
@@ -110,7 +133,7 @@ export default function CourseAssignmentsComponent(props) {
                 aria-describedby="modal-modal-description"
                 >
                 <Box sx={style}>
-                    <NewHwFormComponent handleClose={handleHwClose} courseCode={props.courseCode} />
+                    <NewHwFormComponent refresh={handleRefresh} handleClose={handleHwClose} courseCode={props.courseCode} />
                 </Box>
                 </Modal>  
             </div>

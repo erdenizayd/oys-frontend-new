@@ -8,6 +8,7 @@ import { Button, Typography } from '@mui/material';
 import NewUserFormComponent from './newuserform';
 import UserApi from '../api/userapi';
 import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 export default function AddNewUserComponent(props) {
 
@@ -27,11 +28,20 @@ export default function AddNewUserComponent(props) {
 
         const response = (await userApi.addUser(request)).data;
         props.setResponse(response);
+        toast.success("Kullanıcı başarıyla eklendi.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            })
     }
 
     return (
         <Box sx={{ minWidth: 120 }}>
-            {props.response ? <div><Typography>{props.response}</Typography> 
+            {props.response ? <div><Typography>Kullanıcı şifresi: {props.response}</Typography> 
             <Button sx={{float: "right"}} onClick={() => {props.setOpen(false)}}>
                 Kapat</Button></div>: 
             <div><FormControl variant="standard" fullWidth>

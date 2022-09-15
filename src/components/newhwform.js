@@ -1,4 +1,4 @@
-import { TextField, Button, Autocomplete } from "@mui/material";
+import { TextField, Button, Autocomplete, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import CourseApi from "../api/courseapi";
 import HwApi from "../api/hwapi";
@@ -46,13 +46,19 @@ export default function NewHwFormComponent(props) {
 
         const response = (await hwApi.addHomework(formData)).data;
         props.handleClose();
+        props.refresh();
+
         console.log(response);
     }
 
     return(
-        <div>
-            <input type="date" onChange={(e) => setDate(e.target.value)}/>
-            <input type="time" onChange={(e) => setTime(e.target.value)}/>
+        <div style={{padding: '10px'}}>
+            <Typography 
+            align='center'
+                sx={{marginBottom: '10px'}}
+            >Yeni Ödev Ekle</Typography>
+            <input className='examForm' type="date" onChange={(e) => setDate(e.target.value)}/>
+            <input className='examForm' type="time" onChange={(e) => setTime(e.target.value)}/>
             <Autocomplete
                         inputValue={assistantName}
                         onInputChange={(e,value) => {
@@ -61,12 +67,14 @@ export default function NewHwFormComponent(props) {
                         name="assistantName"
                         id="assistantName"
                         options={course.assistantNames}
-                        sx={{ width: 300 }}
+                        sx={{ width: 300 ,
+                        width: '100%',
+                            marginBottom: '10px'}}
                         renderInput={(params) => <TextField {...params} label="Asistan" />}
                     />
-            <input type="file" onChange={(e) => setDetails(e.target.files[0])}/>
+            <input style={{marginBottom:'10px'}}type="file" onChange={(e) => setDetails(e.target.files[0])}/>
 
-            <Button onClick={handleClick}>Ödev Ekle</Button>
+            <Button variant='contained' sx={{width: '100%', marginBottom: '10px', marginTop: '10px'}} onClick={handleClick}>Ödev Ekle</Button>
         </div>
     );
 }

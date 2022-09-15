@@ -115,31 +115,88 @@ export default function HwPageContentComponent(props) {
         console.log(response);
     }
 
+    function getGrade(grades) {
+        if(grades.length === 0) return "Notlandırılmadı";
+
+        for(let i = 0; i < grades.length; i++) {
+            if(grades[i].hwId === Number(props.hwId)) {
+                if(grades[i].grade === -1) return "Notlandırılmadı";
+                else return grades[i].grade;
+            }
+        }
+    }
+
     return (
         <div style={{gridColumn: 'span 3'}}>
-            <Box>
-            <Typography>Ödevden sorumlu asistan: {homework.assistantName}</Typography>
-            <Typography>Ödevin son teslim tarihi: {homework.lastDate}</Typography>
-            <Button onClick={handleClick}>Ödev Detayları</Button>
+            <Box sx={{
+                    backgroundColor: "#F4F6F6",
+                    borderStyle: "solid #D2DADA",
+                    borderWidth: "1px",
+                    padding: 3,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px'}}>
+            <div>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Ödevden Sorumlu Asistan: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{homework.assistantName}</Typography>     
+                
+                <Typography
+                 sx={{
+                    marginLeft: '20px',
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Ödevin son teslim tarihi: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{homework.lastDate}</Typography>     
+                <Button sx={{marginLeft: '20px'}}variant='outlined' onClick={handleClick}>Ödev Detayları</Button> 
+                </div>
+                
             </Box>
-            {localStorage.getItem("role") === "student" ?<div>
+            {localStorage.getItem("role") === "STUDENT" ?<div>
             
             {homework.isGraded ? <Box>
                 <HomeworkGradeDetailsComponent hwId={props.hwId}/>
                 <HomeworkGradeChartComponent hwId={props.hwId} />
-            </Box> : <Box><Box>
+            </Box> : <Box sx={{
+                    backgroundColor: "#F4F6F6",
+                    borderStyle: "solid #D2DADA",
+                    borderWidth: "1px",
+                    padding: 3,
+                    margin: '10px 0 10px 0',
+                    borderRadius: '3px',
+                    alignContent:'center'}}><Box 
+                    sx= {{
+                        width:'40%',
+                        display: 'inline-block'
+                    }}>
+                <div style={{width: '100%', height: '110px'}}>                
                 <input type="file" onChange={(e) => setHwFile(e.target.files[0])} disabled={isExpired()}/>
                 <TextField
+                sx={{float: 'right'}}
                 onChange={(e) => setAbout(e.target.value)}
                 disabled={isExpired()}
                 id="about"
                 label="Açıklama"
                 multiline
-                rows={4}
+                rows={3}
                 />
-                <Button disabled={isExpired()} onClick={handleSubmit}>Yükle</Button>
+                </div>
+
+                <div style={{width: '100%'}}>
+                <Button variant='contained' style={{float:'right',marginTop:'20px'}} disabled={isExpired()} onClick={handleSubmit}>Yükle</Button>
+                </div>
             </Box>
-            <Box>
+
+            <Box sx= {{
+                        width:'50%',
+                        float: 'right',
+                        display: 'inline-block'
+
+                    }}>
                 {(submissions.length === 0) ? "Henüz ödev teslimi yapmadınız." : 
                 submissions.map((r) => {
                     return <div>
@@ -154,7 +211,8 @@ export default function HwPageContentComponent(props) {
             <Table sx={{ }} aria-label="simple table">
                 <TableHead>
                     <TableRow >
-                        <TableCell sx={{ width: '90%' }}>Öğrenci Adı</TableCell>
+                        <TableCell sx={{ width: '50%' }}>Öğrenci Adı</TableCell>
+                        <TableCell>Not</TableCell>
                         <TableCell></TableCell>
                     </TableRow>
                 </TableHead>
@@ -163,6 +221,9 @@ export default function HwPageContentComponent(props) {
                     <TableRow>
                     <TableCell>
                         <Typography>{row.name}</Typography>
+                    </TableCell>
+                    <TableCell>
+                        <Typography>{getGrade(row.homeworkGrades)}</Typography>
                     </TableCell>
                     <TableCell>
                         <Button onClick={() => handleOpen(row.username, row.studentId)}>Detay</Button>
@@ -189,6 +250,7 @@ export default function HwPageContentComponent(props) {
                     </div>
                 })}
                 <TextField
+                    sx={{marginBottom: '20px', width: '100%'}}
                     onChange={(e) => setGrade(e.target.value)}
                     id="grade"
                     label="Not"
@@ -198,13 +260,14 @@ export default function HwPageContentComponent(props) {
                     }}
                     />
                     <TextField
+                    sx={{marginBottom: '20px', width: '100%'}}
                     onChange={(e) => setEvaluation(e.target.value)}
                     id="about"
                     label="Değerlendirme"
                     multiline
                     rows={4}
                     />
-                    <Button onClick={handleEvaluation}>Not Ekle</Button>
+                    <Button variant='contained' sx={{width: '100%'}} onClick={handleEvaluation}>Not Ekle</Button>
             </Box>
             </Modal>  
 

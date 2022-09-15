@@ -6,6 +6,7 @@ import CourseApi from "../api/courseapi";
 import AssistantApi from "../api/assistantapi";
 import EditIcon from '@mui/icons-material/Edit';
 import EditCourseTimeTableComponent from "./editcoursetimetable";
+import { toast } from "react-toastify";
 
 
 const style = {
@@ -85,6 +86,16 @@ export default function CourseDetailsComponent(props) {
             return object.name === assistantName;
         })
         const response = (await courseApi.addAssistant(props.courseCode.toUpperCase(), assistants[index].id)).data;
+        toast.success(response.message,{
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            } );
+        setResponse(response);
         handleClose();
     }
     useEffect(() => {
@@ -142,49 +153,69 @@ export default function CourseDetailsComponent(props) {
                     gridTemplateColumns: ' auto auto'
                 }}>
                 <Box  sx={{
+                    backgroundColor: "#F4F6F6",
                     gridColumn:"span 2",
-                    borderStyle: "solid",
+                    borderStyle: "solid #D2DADA",
                     borderWidth: "1px",
-                    padding: 2,
+                    padding: 3,
                     margin: '10px 0 10px 0',
                     borderRadius: '3px'
                 }}>
-                <span>
-                <Typography>Öğretim Görevlisi: {course.lecturerName}</Typography>     
+                <div style={{marginBottom: '10px'}}>
+                <Typography
+                 sx={{
+                    fontWeight: 'bold',
+                    display: "inline"
+                }}>Öğretim Görevlisi: </Typography><Typography sx={{
+                    display: "inline"
+                }}>{course.lecturerName}</Typography>     
+                </div>
+                <div style={{marginBottom: '10px'}}>
+                <Typography sx={{
+                    display: "inline",
+                    fontWeight: 'bold'
+                }}>Ders Tipi: </Typography><Typography sx={{
+                    display: "inline"
+                }}> {course.type.charAt(0) + course.type.slice(1).toLocaleLowerCase()}</Typography>
                 
-                <Typography>Ders Tipi: {course.type.charAt(0) + course.type.slice(1).toLocaleLowerCase()}</Typography>
-                </span>
-                <Typography>Hakkında</Typography>
+                </div>
+
+                <Typography sx={{fontWeight: 'bold'}}>Ders Hakkında:</Typography>
                 {course.about}
 
                 
                 </Box>
                 <Box  sx={{
-                    gridColumn:"span 1",
-                    borderStyle: "solid",
+                    backgroundColor: "#F4F6F6",
+                    gridColumn:"span 2",
+                    borderStyle: "solid #D2DADA",
                     borderWidth: "1px",
-                    padding: 2,
+                    padding: 3,
                     margin: '10px 0 10px 0',
                     borderRadius: '3px'
                 }}>
-                <Typography>Sınıf</Typography>
-                {course.roomName}
-
-                <Typography>Ders Saatleri</Typography>
-                {createCourseHours(course.courseHours)}
+                <div style={{marginBottom: '10px'}}>
+                <Typography sx= {{display: "inline", fontWeight: 'bold'}}>Sınıf: </Typography>
+                <Typography sx= {{display: "inline"}}>{course.roomName}</Typography>
+                </div>
+                <div>
+                <Typography sx={{fontWeight: 'bold'}}>Ders Saatleri:</Typography>
+                {createCourseHours(course.courseHours).split("\n").map((s) => <div style={{marginLeft: '10px'}}>{s}</div>)}
+                </div>
                 </Box>
                 <Box  sx={{
-                    gridColumn:"span 1",
-                    borderStyle: "solid",
+                    backgroundColor: "#F4F6F6",
+                    gridColumn:"span 2",
+                    borderStyle: "solid #D2DADA",
                     borderWidth: "1px",
-                    padding: 2,
+                    padding: 3,
                     margin: '10px 0 10px 0',
                     borderRadius: '3px'
                 }}>
-                <Typography >Ders Asistanları 
-                    <IconButton sx={{float: 'right'}} onClick={handleOpen}><AddIcon/></IconButton></Typography>
+                <Typography sx={{fontWeight: 'bold'}}>Ders Asistanları: 
+                    <IconButton sx={{float: 'right', color: "#2F9C95"}} onClick={handleOpen}><AddIcon/></IconButton></Typography>
                 
-                {course.assistantNames.length > 0 ? course.assistantNames : "Bu dersin henüz asistanı yok." }
+                {course.assistantNames.length > 0 ? course.assistantNames.map(s => <div style={{marginLeft: '10px'}}>{s}</div>) : "Bu dersin henüz asistanı yok." }
                 </Box>
                 </Box>
 

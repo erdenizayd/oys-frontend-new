@@ -1,4 +1,4 @@
-import { TextField, FormControl, InputLabel, Select, MenuItem, Button } from "@mui/material";
+import { TextField, FormControl, InputLabel, Select, MenuItem, Button, Typography } from "@mui/material";
 import { RoomApi } from "../api/roomapi";
 import { useState, useEffect } from "react";
 import ExamApi from "../api/examapi";
@@ -39,13 +39,21 @@ export default function NewExamFormComponent(props) {
         
         const response = (await examApi.addExam(request)).class;
         props.handleClose();
+        props.refresh();
         console.log(response.message);
+        
 
     }
 
     return (
-        <div>
+        <div style={{padding: '10px'}}>
+            <Typography
+            align='center'
+                sx={{marginBottom: '10px'}}
+            >Yeni Sınav Ekle</Typography>
             <TextField
+            sx={{width: '100%',
+            marginBottom: '10px'}}
                 onChange={(e) => setName(e.target.value)}
                 required
                 name="name"
@@ -53,6 +61,8 @@ export default function NewExamFormComponent(props) {
                 label="Sınav Adı:"
             />
             <TextField
+            sx={{width: '100%',
+            marginBottom: '10px'}}
                 onChange={(e) => setDetails(e.target.value)}
                 required
                 name="details"
@@ -62,6 +72,7 @@ export default function NewExamFormComponent(props) {
             <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
             <InputLabel id="select-a-class">Sınıflar</InputLabel>
             <Select
+            sx={{width: '100%', marginBottom: '10px'}}
             labelId="select-a-class-label"
             id="select-a-class"
             value={currentClass}
@@ -71,11 +82,11 @@ export default function NewExamFormComponent(props) {
                { classes.map((e) => {return <MenuItem value={e.name}>{e.name}</MenuItem>})}
             </Select>
             </FormControl>
-
-            <input type="date" onChange={(e) => setDate(e.target.value)}/>
-            <input type="time" onChange={(e) => setTime(e.target.value)}/>
-
-            <Button onClick={handleClick}>Sınav Ekle</Button>
+            <div style={{width:'100%', alignContent: 'center'}}>
+            <input className='examForm' type="date" onChange={(e) => setDate(e.target.value)}/>
+            <input className='examForm' type="time" onChange={(e) => setTime(e.target.value)}/>
+            </div>
+            <Button variant='contained' sx={{width: '100%', marginBottom: '10px', marginTop: '10px'}} onClick={handleClick}>Sınav Ekle</Button>
 
         </div>
 

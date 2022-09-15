@@ -4,6 +4,7 @@ import CourseTimeTableComponent from "./addcoursestimetable";
 import { RoomApi } from "../api/roomapi";
 import AddNewCourseFormComponent from "./addnewcourseform";
 import CourseApi from "../api/courseapi";
+import { toast } from "react-toastify";
 
 const style = {
     position: 'absolute',
@@ -230,7 +231,15 @@ export default function AddNewCourseClassesTableComponent(props) {
                 }
             }
         }
-        if(newList.length === 0) setErrorOpen(true);
+        if(newList.length === 0) toast.error("Ders oluşturmak için öncelikle saat seçmelisiniz.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
         else {
             setHourList(newList);
             setOpen(true);
@@ -249,9 +258,26 @@ export default function AddNewCourseClassesTableComponent(props) {
         };
         const response = (await courseApi.createCourse(request)).data;
         setResponse(response);
-        console.log(response.message);
+        console.log(response);
+        if(response.response === "SUCCESS") toast.success(response.message,{
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                } );
+        else toast.error(response.message,{
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            } );
         props.setValue(0);
-        
         
     }
 
@@ -285,8 +311,11 @@ export default function AddNewCourseClassesTableComponent(props) {
                { classes.map((e) => {return <MenuItem value={e.name}>{e.name}</MenuItem>})}
             </Select>
         </FormControl>
+        
         {(currentClass && <div><CourseTimeTableComponent clicked={clicked} setClicked={setClicked} rows={rows}/>
-        <Button onClick={handleOpen}>Ders Ekle</Button>
+        <Button onClick={handleOpen} 
+            sx= {{float:"right", marginTop:'20px'}}
+            variant="contained">Ders Ekle</Button>
         <Modal
                 open={open}
                 onClose={handleClose}
@@ -299,11 +328,7 @@ export default function AddNewCourseClassesTableComponent(props) {
             </Modal>  
         </div>
             )}
-        <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleErrorClose}>
-        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
-            Ders oluşturmak için öncelikle zaman aralığı seçmelisiniz!
-        </Alert>
-        </Snackbar>
+
         </div>
     );
 }
