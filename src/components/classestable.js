@@ -1,7 +1,20 @@
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, Button, Box, Modal, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ClassesTimeTableComponent from "./classestimetable";
 import { RoomApi } from "../api/roomapi";
+import AddNewClassComponent from "./addnewclass";
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    borderRadius: '5px'
+};
 
 export default function ClassesTableComponent() {
 
@@ -150,6 +163,9 @@ export default function ClassesTableComponent() {
             friday: ""
         }
     ]
+    const [open, setOpen] = useState(false);
+
+    const handleClose = () => setOpen(false);
 
     function createRows(course) {
         const newRows = [...rows];
@@ -199,6 +215,25 @@ export default function ClassesTableComponent() {
 
     return (
         <div className="classestable">
+        {localStorage.getItem("role") === 'ADMIN' ? <div><Button onClick={() => setOpen(true)}>Sınıf Ekle</Button>
+        <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={style}>
+                    <Typography align='center'>Yeni Sınıf Ekle</Typography>
+                <Box
+                sx={{
+                    marginTop   : "20px",
+                }}
+                >
+                    <AddNewClassComponent setOpen={setOpen}/>
+                </Box>
+                </Box>
+            </Modal> 
+        </div>: ""}
         <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>
             <InputLabel id="select-a-class">Sınıflar</InputLabel>
             <Select

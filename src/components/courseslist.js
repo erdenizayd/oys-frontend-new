@@ -19,7 +19,7 @@ function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
     const scheduleObj = [[],[],[],[],[]];
     const hours = [
-        "8.40","9.40","10.40","11.40","13.40","14.40","15.40","16.40"
+        "8.40","9.40","10.40","11.40","12.40","13.40","14.40","15.40","16.40"
     ];
     const days = [
         "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"

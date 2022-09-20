@@ -75,6 +75,8 @@ export default function CourseAssignmentsComponent(props) {
                         <TableCell><a style={{textDecoration: "none"}} href={"/my_courses/" + props.courseCode + "/exam/" + row.id}>{row.name}</a></TableCell>
                         <TableCell>{row.date}</TableCell>
                         <TableCell>{row.roomName}</TableCell>
+                        <TableCell></TableCell>
+
                         </TableRow>
                     ))}
                     </TableBody>
@@ -106,8 +108,10 @@ export default function CourseAssignmentsComponent(props) {
                     {course.homeworks.map((row) => (
                         <TableRow>
                         <TableCell><a href={"/my_courses/" + props.courseCode + "/hw/" + row.id}>{"Ödev" + row.id}</a></TableCell>
-                        <TableCell>{row.date}</TableCell>
+                        <TableCell>{row.lastDate}</TableCell>
                         <TableCell>{row.assistantName}</TableCell>
+                        <TableCell></TableCell>
+
                         </TableRow>
                     ))}
                     </TableBody>

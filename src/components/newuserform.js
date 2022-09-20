@@ -4,7 +4,49 @@ import { useState } from "react";
 
 export default function NewUserFormComponent(props) {
 
-    const [formState, setFormState] = useState({});
+    String.prototype.turkishtoEnglish = function () {
+        return this.replace('Ğ','g')
+            .replace('Ü','u')
+            .replace('Ş','s')
+            .replace('I','i')
+            .replace('İ','i')
+            .replace('Ö','o')
+            .replace('Ç','c')
+            .replace('ğ','g')
+             .replace('ü','u')
+            .replace('ş','s')
+            .replace('ı','i')
+            .replace('ö','o')
+            .replace('ç','c');
+    };
+
+    const [formState, setFormState] = useState({
+        "name": "",
+        "surname" : ""
+    });
+
+    function isValue() {
+        if((props.role === 'LECTURER') || (props.role === 'ASSISTANT')) {
+            return (<TextField
+                disabled
+                onChange={onFormChange}
+                required
+                defaultValue={formState['name'].toLowerCase().turkishtoEnglish() + "." 
+                + formState['surname'].toLowerCase().turkishtoEnglish()}
+                value={formState['name'].toLowerCase().turkishtoEnglish() + "." + formState['surname'].toLowerCase().turkishtoEnglish()}
+                name="username"
+                id="outlined-required"
+                label="Kullanıcı Adı"
+            />);
+        }
+        else return (<TextField
+            onChange={onFormChange}
+            required
+            name="username"
+            id="outlined-required"
+            label="Kullanıcı Adı"
+        />);
+    }
 
     function onFormChange(event) {
 
@@ -12,6 +54,8 @@ export default function NewUserFormComponent(props) {
         const value = event.target.value;
         const newState = {...formState};
         newState[name] = value;
+        if((props.role === 'LECTURER') || (props.role === 'ASSISTANT')) newState['username'] = formState['name'].toLowerCase().turkishtoEnglish() + "." 
+        + formState['surname'].toLowerCase().turkishtoEnglish();
         setFormState(newState);
 
     }
@@ -51,13 +95,7 @@ export default function NewUserFormComponent(props) {
                 label="Okul Mail Adresi"
                 defaultValue="@metu.edu.tr"
             /></div>
-            <div><TextField
-                onChange={onFormChange}
-                required
-                name="username"
-                id="outlined-required"
-                label="Kullanıcı Adı"
-            /></div>
+            <div>{isValue()}</div>
             <div><Button sx={{float: "right"}} onClick={() => props.submit(formState)}>Kullanıcı Ekle</Button></div>
             </Box>
     );

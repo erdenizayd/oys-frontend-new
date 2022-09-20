@@ -14,7 +14,7 @@ function NavigationComponent() {
                     () => (
                         location.pathname === "/" ? "navactive" : "nav"
                         )}>Anasayfa</NavLink>
-                {localStorage.getItem("role") === 'admin' ? "" : <NavLink to="/my_courses" className={
+                {localStorage.getItem("role") === 'ADMIN' ? "" : <NavLink to="/my_courses" className={
                     () => (
                         location.pathname === "/my_courses" ? "navactive" : "nav"
                     )}>Kayıtlı Derslerim</NavLink>}

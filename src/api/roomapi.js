@@ -10,4 +10,8 @@ export class RoomApi {
         const request = "/getRooms/" + name;
         return axios.get(request);
     }
+
+    createRoom(request) {
+        return axios.post("/createRoom", request);
+    }
 }

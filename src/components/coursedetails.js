@@ -24,7 +24,7 @@ function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
     const scheduleObj = [[],[],[],[],[]];
     const hours = [
-        "8.40","9.40","10.40","11.40","13.40","14.40","15.40","16.40"
+        "8.40","9.40","10.40","11.40","12.40","13.40","14.40","15.40","16.40"
     ];
     const days = [
         "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"
@@ -213,7 +213,8 @@ export default function CourseDetailsComponent(props) {
                     borderRadius: '3px'
                 }}>
                 <Typography sx={{fontWeight: 'bold'}}>Ders Asistanları: 
-                    <IconButton sx={{float: 'right', color: "#2F9C95"}} onClick={handleOpen}><AddIcon/></IconButton></Typography>
+                    {localStorage.getItem("role") === 'STUDENT' ? "" : 
+                    <IconButton sx={{float: 'right', color: "#2F9C95"}} onClick={handleOpen}><AddIcon/></IconButton>}</Typography>
                 
                 {course.assistantNames.length > 0 ? course.assistantNames.map(s => <div style={{marginLeft: '10px'}}>{s}</div>) : "Bu dersin henüz asistanı yok." }
                 </Box>

@@ -25,7 +25,6 @@ export default function AddNewUserComponent(props) {
             username: formState.username,
             type: role
         };
-
         const response = (await userApi.addUser(request)).data;
         props.setResponse(response);
         toast.success("Kullanıcı başarıyla eklendi.", {

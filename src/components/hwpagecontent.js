@@ -97,6 +97,7 @@ export default function HwPageContentComponent(props) {
         formData.append('username', localStorage.getItem("username"));
 
         const response = (await hwApi.submitHomework(props.hwId,formData)).data;
+        console.log(response)
     }
 
     async function fetchStudents() {

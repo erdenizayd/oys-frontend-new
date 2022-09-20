@@ -26,8 +26,6 @@ export default function AddNewCourseClassesTableComponent(props) {
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState('');
     const [response, setResponse] = useState({});
-    const [errorOpen, setErrorOpen] = useState(false);
-    const handleErrorClose = () => setErrorOpen(false);
 
     const [rows, setRows] = useState([
         {
@@ -63,11 +61,11 @@ export default function AddNewCourseClassesTableComponent(props) {
             friday: ""
         },{
             hour: "12.40",
-            monday: "",
-            tuesday: "",
-            wednesday: "",
-            thursday: "",
-            friday: ""
+            monday: "Öğle Arası",
+            tuesday: "Öğle Arası",
+            wednesday: "Öğle Arası",
+            thursday: "Öğle Arası",
+            friday: "Öğle Arası"
         },{
             hour: "13.40",
             monday: "",
@@ -134,11 +132,11 @@ export default function AddNewCourseClassesTableComponent(props) {
             friday: ""
         },{
             hour: "12.40",
-            monday: "",
-            tuesday: "",
-            wednesday: "",
-            thursday: "",
-            friday: ""
+            monday: "Öğle Arası",
+            tuesday: "Öğle Arası",
+            wednesday: "Öğle Arası",
+            thursday: "Öğle Arası",
+            friday: "Öğle Arası"
         },{
             hour: "13.40",
             monday: "",
@@ -224,7 +222,7 @@ export default function AddNewCourseClassesTableComponent(props) {
 
     function getHourList() {
         const newList = [];
-        for(let i = 0; i < 8; i++) {
+        for(let i = 0; i < 9; i++) {
             for(let j = 0; j < 5; j++) {
                 if(clicked[i][j] == true) {
                     newList.push({"first": j+1 , "second": i+1});
@@ -251,7 +249,7 @@ export default function AddNewCourseClassesTableComponent(props) {
             name: formState.name,
             about: formState.about,
             type: type,
-            code: formState.code,
+            code: formState.code.toUpperCase(),
             courseHourList: hourList,
             roomName: currentClass,
             lecturerName: formState.lecturerName
