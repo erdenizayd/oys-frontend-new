@@ -7,6 +7,7 @@ import CourseDetailsComponent from "./coursedetails";
 import CourseAssignmentsComponent from "./courseassignments";
 import CourseAnnouncementsComponent from "./courseannouncements";
 import CourseStudentsComponent from "./coursestudents";
+import CourseSourcesComponent from "./coursesources";
 
 
 
@@ -71,11 +72,10 @@ export default function CoursePageContentComponent(props) {
             <Tabs sx={{gridColumn: 'span 2'}}value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Ders Bilgileri" {...a11yProps(0)} />
             <Tab label="Ödev ve Sınavlar" {...a11yProps(1)} />
-            
-
+            <Tab label="Kaynaklar" {...a11yProps(2)} />
+            <Tab label="Duyurular" {...a11yProps(2)} />
             </Tabs>
             </Box>
-            <Typography sx={{p:2}}>{course.code} - {course.name}</Typography>
             <TabPanel value={value} index={0}>
             
                <CourseDetailsComponent courseCode={props.courseCode}/> 
@@ -84,9 +84,12 @@ export default function CoursePageContentComponent(props) {
             <TabPanel value={value} index={1}>
                 <CourseAssignmentsComponent courseCode={props.courseCode}/>
             </TabPanel>
-
-            
-
+            <TabPanel value={value} index={2}>
+                <CourseSourcesComponent courseCode={props.courseCode}/>
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+                <CourseAnnouncementsComponent courseCode={props.courseCode}/>
+            </TabPanel>
             </Box>
         </div>
     );

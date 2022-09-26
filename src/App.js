@@ -18,6 +18,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import FooterComponent from './components/footer';
+import EditProfilePageComponent from './components/editprofilepage';
+import ProfilePageComponent from './components/profilepage';
 
 const theme = createTheme({
   palette: {
@@ -69,12 +71,14 @@ function App() {
         <Route path="announcements" element={<AnnouncementPageComponent />}/>
         <Route path="my_courses" element={<AttendedCoursesPageComponent />}/>
         <Route path="courses" element={<CoursesPageComponent />}/>
-        <Route path="users" element={<UsersPageComponent/>}/>
+        <Route path="usersList" element={<UsersPageComponent/>}/>
         <Route path="grades" element={<GradesPageComponent/>}/>
         <Route path="classes" element={<ClassesPageComponent/>}/>
         <Route path="my_courses/:course" element={<CoursePageComponent/>}/>
         <Route path="my_courses/:course/exam/:exam" element={<ExamPageComponent/>}/>
         <Route path="my_courses/:course/hw/:hw" element={<HwPageComponent/>}/>
+        <Route path="editProfile" element={<EditProfilePageComponent/>}/>
+        <Route path="usersList/:username" element={<ProfilePageComponent/>}/>
       </Routes>
     </BrowserRouter>
     

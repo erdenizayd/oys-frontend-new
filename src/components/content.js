@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import AnnouncementComponent from "./announcement";
+import AnnouncementPageComponent from "./announcementpage";
+import AnnouncementsPageContentComponent from "./announcementspagecontent";
 import ClassesTableComponent from "./classestable";
 import ClassInfoComponent from "./classinfo";
 import CoursePageContentComponent from "./coursepagecontent";
 import CoursesContentComponent from "./coursescontent";
 import CoursesListComponent from "./courseslist";
+import EditProfileContentComponent from "./editprofilecontent";
 import EnrollCourseComponent from "./enrollcourse";
 import ExamPageComponent from "./exampage";
 import ExamPageContentComponent from "./exampagecontent";
 import GradeComponent from "./grade";
+import HomepageContentComponent from "./homepagecontent";
 import HwPageContentComponent from "./hwpagecontent";
 import MyCoursesContentComponent from "./mycoursescontent";
+import ProfileConcentComponent from "./profilecontent";
 import CourseSearchComponent from "./searchcourse";
 import UsersContentComponent from "./userscontent";
 import UsersListComponent from "./userslist";
@@ -23,21 +28,17 @@ function ContentComponent(props) {
     if(props.page === "homepage") {
         return (        
             <div className="content">
-                <div style={{minHeight: "500px"}}></div>
+                <HomepageContentComponent/>
             </div>
         );
     }
-    /*else if(props.page === "announcements") {
+    else if(props.page === "announcements") {
         return (
             <div className="content">
-                <div className="title">Duyurular</div>
-                <AnnouncementComponent/>
-                <AnnouncementComponent/>
-                <AnnouncementComponent/>
-                <AnnouncementComponent/>
+                <AnnouncementsPageContentComponent/>
             </div>
         )
-    }*/
+    }
     else if(props.page === "my_courses") {
         return (
             <div className="content">
@@ -84,6 +85,20 @@ function ContentComponent(props) {
         return (
             <div className="content">
                 <HwPageContentComponent hwId={props.hwId} courseCode={props.courseCode}/>
+            </div>
+        );
+    }
+    else if(props.page === "editProfile") {
+        return (
+            <div className="content">
+                <EditProfileContentComponent/>
+            </div>
+        );
+    }
+    else if(props.page === "profile") {
+        return (
+            <div className="content">
+                <ProfileConcentComponent username={props.username}/>
             </div>
         );
     }

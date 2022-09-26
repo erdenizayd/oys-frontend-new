@@ -212,6 +212,12 @@ html {
   border: 1px solid #2F9C95;
 }
 
+.profileTimeTable .MuiTableCell-root {
+  border: 1px solid #2F9C95;
+}
+
+
+
 .loginBox {
   background-color: #E9ECEC;
   padding: 40px;

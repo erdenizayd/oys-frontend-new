@@ -14,6 +14,7 @@ import StudentApi from '../api/studentapi';
 import EditIcon from '@mui/icons-material/Edit';
 import EditCourseComponent from './editcourse';
 import { toast } from 'react-toastify';
+import CoursesPaginationComponent from './coursespagination';
 
 function createCourseHours(courseHours) {
     const schedule = [[],[],[],[],[]];
@@ -54,6 +55,12 @@ function CoursesListComponent(props) {
     const handleModalClose = () => setOpenModal(false);
     const [currentCourse, setCurrentCourse] = useState('');
 
+    const [pageCount, setPageCount] = useState(0);
+    const [page, setPage] = useState(1);
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
           return;
@@ -73,8 +80,9 @@ function CoursesListComponent(props) {
     }
 
     async function fetchCourses() {
-        const response = (await courseApi.getCoursesList()).data;
+        const response = (await courseApi.getCoursesList(page-1)).data;
         setCourses(response);
+        if(response.length > 0)setPageCount(response[0].pageCount);
     }
 
     async function handleDelete(courseCode) {
@@ -160,6 +168,7 @@ function CoursesListComponent(props) {
                 </TableBody>
             </Table>
         </TableContainer>
+        <CoursesPaginationComponent pageCount={pageCount} page={page} handleChange={handlePageChange}/>
         <Modal
                 open={openModal}
                 onClose={handleModalClose}

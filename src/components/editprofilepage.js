@@ -1,18 +1,18 @@
-import BreadcrumbsComponent from "./breadcrumbs";
-import ContentComponent from "./content";
 import HeaderComponent from "./header";
 import NavigationComponent from "./navigation";
+import ContentComponent from "./content";
 import ReminderComponent from "./reminder";
+import BreadcrumbsComponent from "./breadcrumbs";
 
-function UsersPageComponent() {
+export default function EditProfilePageComponent() {
     const breadcrumbs = [
         {
             name: "Anasayfa",
             address: "/"
         },
         {
-            name: "Kullanıcılar",
-            address: "/usersList"
+            name: "Profilimi Düzenle",
+            address: "/editProfile"
         }
     ];
     return (
@@ -20,10 +20,8 @@ function UsersPageComponent() {
             <HeaderComponent/>
             <BreadcrumbsComponent breadcrumbs={breadcrumbs} />
             <NavigationComponent />
-            <ContentComponent page={"users"}/>
+            <ContentComponent page={"editProfile"}/>
             <ReminderComponent />
         </div>
     );
 }
-
-export default UsersPageComponent;

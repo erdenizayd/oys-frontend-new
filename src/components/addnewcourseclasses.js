@@ -295,6 +295,8 @@ export default function AddNewCourseClassesTableComponent(props) {
         response.map((e) => createRows(e));
     }
 
+    
+
     return (
         <div className="classestable">
         <FormControl variant="standard" sx={{ m: 1, minWidth: 300 }}>

@@ -204,7 +204,7 @@ export default function ClassesTableComponent() {
     const handleChange = (event) => {
         setCurrentClass(event.target.value);
         setRows(emptyRows);
-        fetchTable(event.target.value);
+        fetchTable(event.target.value.name);
     };
 
     async function fetchTable(name) {
@@ -215,7 +215,7 @@ export default function ClassesTableComponent() {
 
     return (
         <div className="classestable">
-        {localStorage.getItem("role") === 'ADMIN' ? <div><Button onClick={() => setOpen(true)}>Sınıf Ekle</Button>
+        {localStorage.getItem("role") === 'ADMIN' ? <div><Button sx={{float: 'right'}} onClick={() => setOpen(true)}>Sınıf Ekle</Button>
         <Modal
                 open={open}
                 onClose={handleClose}
@@ -243,10 +243,10 @@ export default function ClassesTableComponent() {
             onChange={handleChange}
             label="Class"
             >
-               { classes.map((e) => {return <MenuItem value={e.name}>{e.name}</MenuItem>})}
+               { classes.map((e) => {return <MenuItem value={e}>{e.name}</MenuItem>})}
             </Select>
         </FormControl>
-        {(currentClass && <ClassesTimeTableComponent rows={rows}/>
+        {(currentClass && <ClassesTimeTableComponent class={currentClass} rows={rows}/>
             )}
         </div>
     );

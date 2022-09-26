@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export default class CourseApi {
-    getCoursesList() {
-        return axios.get("/courses");
+    getCoursesList(page) {
+        return axios.get("/courses/page=" + page);
     }
     getCourse(courseCode) {
         return axios.get("/course/" + courseCode);  
@@ -23,8 +23,28 @@ export default class CourseApi {
         return axios.put("/updateCourse/" + courseCode, course);
     }
     updateCourseDetails(courseCode, course) {
-        console.log(course);
         return axios.put("/updateCourseDetails/" + courseCode, course);
+    }
+    getSources(courseCode){
+        return axios.get("/getSources/" + courseCode);
+    }
+    addLinkSource(courseCode, request) {
+        return axios.post("/addSources/link/" + courseCode, request);
+    }
+    addFileSource(courseCode, formData) {
+        return axios.post("/addSources/file/" + courseCode, formData, {headers: {"content-type": "multipart/form-data"}});
+    }
+    getFileSource(courseCode, sourceId) {
+        return axios.get("/getSources/file/" + courseCode + "/" + sourceId + "/", {
+            responseType: 'arraybuffer',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/pdf'
+            }
+        })
+    }
+    newAnnouncement(courseCode, request) {
+        return axios.post("/addAnnouncement/" + courseCode, request);
     }
 
 }

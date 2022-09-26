@@ -11,9 +11,11 @@ import React, { useContext, useEffect, useState } from "react";
 import UserApi from '../api/userapi';
 import UsersPaginationComponent from './userspagination';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 function UsersListComponent(props) {
 
+    let navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [isUpdated, setIsUpdated] = useState(false);
     const [pageCount, setPageCount] = useState(0);
@@ -98,8 +100,8 @@ function UsersListComponent(props) {
                 </TableHead>
                 <TableBody>
                 {users.map((row) => (
-                    <TableRow>
-                    <TableCell>{row.name}</TableCell>
+                    <TableRow hover >
+                    <TableCell onClick={() => {navigate("/usersList/" + row.username)}}>{row.name}</TableCell>
                     <TableCell>{row.username}</TableCell>
                     <TableCell>
                         <IconButton><EmailIcon/></IconButton>

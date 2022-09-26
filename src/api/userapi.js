@@ -33,4 +33,30 @@ export default class UserApi {
         return axios.get("/lecturers");
     }
 
+    getProfile(username) {
+        return axios.get("/getProfile/" + username);
+    }
+
+    updateProfile(request) {
+        return axios.put("/updateProfile", request);
+    }
+
+    getProfilePhoto(username) {
+        return axios.get("/getProfile/" + username + "/profilePhoto",{
+        responseType: 'arraybuffer',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/jpg'
+        }
+    });
+    }
+
+    uploadProfilePhoto(username, formData) {
+        return axios.post("/updateProfile/" + username + "/newPhoto/", formData, {headers: {"content-type": "multipart/form-data"}});
+    }
+
+    changePassword(request) {
+        return axios.put("/changePassword/" + localStorage.getItem("username"), request);
+    }
+
 }

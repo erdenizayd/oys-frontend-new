@@ -1,4 +1,4 @@
-import { Button, Modal, Typography, Box, TextField, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton } from "@mui/material";
+import { Button, Modal, Typography, Box, TextField, Table, TableContainer, TableHead, TableRow, TableCell, TableBody, IconButton, TablePagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import CourseApi from "../api/courseapi";
 import ExamApi from "../api/examapi";
@@ -35,6 +35,11 @@ export default function ExamPageContentComponent(props) {
     const [students, setStudents] = useState([]);
     const [currentStudent, setCurrentStudent] = useState('');
     const [open, setOpen] = useState(false);
+    const [page, setPage] = useState(0);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     function handleOpen(studentId) {
         setOpen(true);
@@ -172,7 +177,13 @@ export default function ExamPageContentComponent(props) {
                 </TableBody>
             </Table>
         </TableContainer>
-
+        <TablePagination
+          component="div"
+          count={students.length}
+          rowsPerPage={20}
+          page={page}
+          onPageChange={handleChangePage}
+        />
             <Modal
                 open={open}
                 onClose={handleClose}

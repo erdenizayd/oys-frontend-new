@@ -18,11 +18,15 @@ function NavigationComponent() {
                     () => (
                         location.pathname === "/my_courses" ? "navactive" : "nav"
                     )}>Kayıtlı Derslerim</NavLink>}
+                <NavLink to="/announcements" className={
+                    () => (
+                        location.pathname === "/announcements" ? "navactive" : "nav"
+                    )}>Duyurular</NavLink>
                 <NavLink to="/courses" className={
                     () => (
                         location.pathname === "/courses" ? "navactive" : "nav"
                     )}>Tüm Dersler</NavLink>
-                <NavLink to="/users" className={
+                <NavLink to="/usersList" className={
                     () => (
                         location.pathname === "/users" ? "navactive" : "nav"
                     )}>Kullanıcılar</NavLink>

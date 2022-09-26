@@ -1,5 +1,5 @@
 import HwApi from "../api/hwapi";
-import { Modal, Button, Box, Typography, TextField, Table, TableBody, TableContainer, TableRow, TableCell, TableHead } from "@mui/material";
+import { Modal, Button, Box, Typography, TextField, Table, TableBody, TableContainer, TableRow, TableCell, TableHead, TablePagination } from "@mui/material";
 import { useEffect, useState } from "react";
 import CourseApi from "../api/courseapi";
 import HomeworkGradeChartComponent from "./homeworkgradecharts";
@@ -33,6 +33,11 @@ export default function HwPageContentComponent(props) {
     const [hwFile, setHwFile] = useState('');
     const [about, setAbout] = useState('');
     const [open, setOpen] = useState(false);
+    const [page, setPage] = useState(0);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
 
     function handleOpen(username,studentId) {
         setOpen(true);
@@ -234,7 +239,15 @@ export default function HwPageContentComponent(props) {
                 </TableBody>
             </Table>
         </TableContainer>
-
+        <TablePagination
+          component="div"
+          count={students.length}
+          rowsPerPage={20}
+          page={page}
+          onPageChange={handleChangePage}
+        />
+        
+        
         <Modal
                 open={open}
                 onClose={handleClose}

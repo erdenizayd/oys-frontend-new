@@ -2,6 +2,7 @@ import { TextField, FormControl, InputLabel, Select, MenuItem, Button, Typograph
 import { RoomApi } from "../api/roomapi";
 import { useState, useEffect } from "react";
 import ExamApi from "../api/examapi";
+import { toast } from "react-toastify";
 
 export default function NewExamFormComponent(props) {
     const examApi = new ExamApi();
@@ -37,10 +38,45 @@ export default function NewExamFormComponent(props) {
             roomName: currentClass
         }
         
-        const response = (await examApi.addExam(request)).class;
-        props.handleClose();
-        props.refresh();
-        console.log(response.message);
+        const response = (await examApi.addExam(request)).data;
+
+        if(response.response === 'SUCCESS') {
+            props.handleClose();
+            props.refresh();
+            toast.success(response.message,{
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        }
+        else if(response.response === 'WARNING') {
+            props.handleClose();
+            props.refresh();
+            toast.warning(response.message,{
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        }
+        else if(response.response === 'ERROR') {
+            toast.error(response.message,{
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        }
         
 
     }
