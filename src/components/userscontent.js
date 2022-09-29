@@ -50,7 +50,7 @@ function a11yProps(index) {
     };
 }
 
-export default function UsersContentComponent() {
+export default function UsersContentComponent(props) {
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -79,7 +79,8 @@ export default function UsersContentComponent() {
             usernameSearch={usernameSearch} 
             setNameSearch={setNameSearch} 
             setUsernameSearch={setUsernameSearch}/>
-            <UsersListComponent response={response}
+            <UsersListComponent 
+            response={response}
             nameSearch={nameSearch}
             usernameSearch={usernameSearch} />
             <Modal

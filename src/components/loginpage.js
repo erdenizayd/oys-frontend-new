@@ -18,6 +18,7 @@ function LoginComponent() {
             const response = (await loginApi.login(valFirst, valSecond)).data;
             localStorage.setItem("username",response.username);
             localStorage.setItem("role",response.role);
+            localStorage.setItem("isLoggedIn","true");
             setRole(response);
             navigate('/');
         }

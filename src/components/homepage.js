@@ -7,17 +7,20 @@ import { LoginApi } from "../api/loginapi";
 import BreadcrumbsComponent from "./breadcrumbs";
 import { useNavigate } from "react-router";
 
-function HomePageComponent() {
+function HomePageComponent(props) {
     const homepage = "homepage";
     const breadcrumbs = [{name: "Anasayfa", address: "/"}];
     let navigate = useNavigate();
     useEffect(() => {
         isLoggedIn();
+        props.connect();   
     }, []);
 
     function isLoggedIn() {
         if(localStorage.getItem("username") === null) navigate("/loginn");
     }
+
+    
     return(
         <div className="container">
             <HeaderComponent/>

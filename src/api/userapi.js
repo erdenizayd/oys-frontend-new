@@ -38,7 +38,7 @@ export default class UserApi {
     }
 
     updateProfile(request) {
-        return axios.put("/updateProfile", request);
+        return axios.put("/updateProfile/", request);
     }
 
     getProfilePhoto(username) {

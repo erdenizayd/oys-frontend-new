@@ -179,11 +179,13 @@ export default function ProfilePageTimetableComponent(props) {
         }
 
         setRows(newRows);
+        setRefresh(!refresh);
     }
 
     useEffect(() => {
         fetchTable();
-    }, [refresh])
+    }, [props.role])
+
 
     async function fetchTable() {
         let response = '';
@@ -194,6 +196,8 @@ export default function ProfilePageTimetableComponent(props) {
                 break;
             case 'ASSISTANT':
                 response = (await assistantApi.getSchedule(props.username)).data;
+                console.log(response);
+
                 response.map((e) => createRows(e));
                 break;
             case 'LECTURER':

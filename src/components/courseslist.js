@@ -116,7 +116,7 @@ function CoursesListComponent(props) {
     async function handleAttend(courseCode) {
         try{
         const response = (await studentApi.attendCourse(courseCode,localStorage.getItem("username"))).data;
-        toast(response.message, {
+        toast.success(response.message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,

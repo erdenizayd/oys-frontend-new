@@ -40,6 +40,8 @@ export default function ProfileConcentComponent(props) {
         setRequest(response);
     }
 
+
+
     return (
         <div style={{gridColumn: 'span 3', padding:'20px', display: 'grid', gridTemplateColumns: '23% 2% 75%'}}>
             <Box sx={{

@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import AnnouncementComponent from "./announcement";
 import AnnouncementPageComponent from "./announcementpage";
 import AnnouncementsPageContentComponent from "./announcementspagecontent";
+import ChatContentComponent from "./chatcontent";
 import ClassesTableComponent from "./classestable";
 import ClassInfoComponent from "./classinfo";
 import CoursePageContentComponent from "./coursepagecontent";
@@ -99,6 +100,13 @@ function ContentComponent(props) {
         return (
             <div className="content">
                 <ProfileConcentComponent username={props.username}/>
+            </div>
+        );
+    }
+    else if(props.page === "messages") {
+        return (
+            <div className="content">
+                <ChatContentComponent />
             </div>
         );
     }

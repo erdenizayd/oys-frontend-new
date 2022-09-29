@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import { IconButton, Modal, TextField, Typography } from "@mui/material";
@@ -9,6 +9,7 @@ import Menu from '@mui/material/Menu';
 import EmailIcon from '@mui/icons-material/Email';
 import UserApi from "../api/userapi";
 import { toast } from "react-toastify";
+import MessageContext from "../context/messagecontext";
 
 const style = {
     position: 'absolute',
@@ -24,6 +25,7 @@ const style = {
 
 function HeaderComponent() {
 
+    const {newMessage, setNewMessage} = useContext(MessageContext);
     let navigate = useNavigate();
     const [anchorElP, setAnchorElP] = useState(null);
     const [anchorElM, setAnchorElM] = useState(null);
@@ -33,6 +35,7 @@ function HeaderComponent() {
     const [newPassword, setNewPassword] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClosePopup = () => setOpen(false);
+
 
     const profileMenu = [
         {
@@ -80,8 +83,16 @@ function HeaderComponent() {
     const handleLogOut = () => {
         localStorage.removeItem("username");
         localStorage.removeItem("role");
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("isConnected");
+
         navigate("/loginn");
     };
+
+    const handleChat = () => {
+        setNewMessage(false);
+        navigate("/messages");
+    }
     
     async function handleSubmit() {
         const request = {
@@ -148,10 +159,10 @@ function HeaderComponent() {
 
             </Menu>
 
-            <IconButton color="inherit" className="messages" onClick={handleMessages} sx={{
+            <IconButton color="inherit" className="messages" onClick={handleChat} sx={{
                 textTransform: 'none',
                 fontSize: "100%",
-            }}><EmailIcon sx={{color: "#2F9C95"}}/></IconButton>
+            }}><EmailIcon sx={(newMessage ? {color: "#2F9C95"} : "")}/></IconButton>
 
             <Modal
                 open={open}
@@ -183,8 +194,7 @@ function HeaderComponent() {
                     </Box>
                 </Box>
             </Modal>
-            
-                
+                 
         </div>
     );
 }

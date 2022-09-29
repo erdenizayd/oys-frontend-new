@@ -66,7 +66,9 @@ export default function CourseAssignmentsComponent(props) {
                             <TableCell sx={{ width: '40%' }}>Sınav</TableCell>
                             <TableCell sx={{ width: '20%' }}>Tarih</TableCell>
                             <TableCell sx={{ width: '20%' }}>Sınıf</TableCell>
-                            <TableCell sx={{width:'20%'}}><Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button></TableCell>
+                            <TableCell sx={{width:'20%'}}>
+                                {(localStorage.getItem("role") === 'STUDENT') ? "" : <Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button>}
+                                </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -82,7 +84,7 @@ export default function CourseAssignmentsComponent(props) {
                     </TableBody>
                 </Table>
             </TableContainer> : <span>Şu anda dersin eklenmiş bir sınavı yok.
-            <Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button></span>}
+            {(localStorage.getItem("role") === 'STUDENT') ? "" :<Button onClick={handleExamOpen} endIcon={<AddIcon/>} sx={{float:"right"}}>Sınav Ekle</Button>}</span>}
                 </Box>
                 <Box  sx={{
                     backgroundColor: "#F4F6F6",
@@ -101,7 +103,9 @@ export default function CourseAssignmentsComponent(props) {
                             <TableCell sx={{ width: '30%' }}>Ödev</TableCell>
                             <TableCell sx={{ width: '20%' }}>Tarih</TableCell>
                             <TableCell sx={{ width: '30%' }}>Sorumlu Asistan</TableCell>
-                            <TableCell sx={{ width: '20%' }}><Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button></TableCell>
+                            <TableCell sx={{ width: '20%' }}>
+                                {(localStorage.getItem("role") === 'STUDENT') ? "" :<Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button>}
+                                </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -117,7 +121,7 @@ export default function CourseAssignmentsComponent(props) {
                     </TableBody>
                 </Table>
             </TableContainer> : <span>Şu anda dersin eklenmiş bir ödevi yok.
-            <Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button></span>}
+            {(localStorage.getItem("role") === 'STUDENT') ? "" : <Button onClick={handleHwOpen} sx={{float:"right"}} endIcon={<AddIcon/>}>Ödev Ekle</Button>}</span>}
             </Box>
                 <Modal
                 open={examOpen}

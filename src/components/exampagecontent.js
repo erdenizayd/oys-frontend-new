@@ -180,7 +180,7 @@ export default function ExamPageContentComponent(props) {
         <TablePagination
           component="div"
           count={students.length}
-          rowsPerPage={20}
+          rowsPerPage={10}
           page={page}
           onPageChange={handleChangePage}
         />

@@ -34,7 +34,7 @@ export default function CourseSourcesComponent(props) {
 
     useEffect(() => {
         fetchSources();
-    },[type]);
+    },[sources]);
 
     async function fetchSources() {
         const response = (await courseApi.getSources(props.courseCode.toUpperCase())).data;
@@ -89,7 +89,7 @@ export default function CourseSourcesComponent(props) {
                 </ListItem>})}
             </List> : <Typography>Şu anda eklenmiş kaynak yok.</Typography>}
             
-            <Button variant="contained" sx={{float:'right'}} onClick={handleOpen}>Kaynak Ekle</Button>
+            {(localStorage.getItem("role") === 'STUDENT') ? "" :<Button variant="contained" sx={{float:'right'}} onClick={handleOpen}>Kaynak Ekle</Button>}
 
             <Modal
                 open={open}

@@ -93,7 +93,7 @@ export default function NewUserFormComponent(props) {
                 name="email"
                 id="outlined-required"
                 label="Okul Mail Adresi"
-                defaultValue="@metu.edu.tr"
+                defaultValue="@yoku.edu.tr"
             /></div>
             <div>{isValue()}</div>
             <div><Button sx={{float: "right"}} onClick={() => props.submit(formState)}>Kullanıcı Ekle</Button></div>

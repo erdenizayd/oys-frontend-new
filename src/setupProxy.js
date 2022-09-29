@@ -114,7 +114,7 @@ module.exports = function(app) {
     })
   );
   app.use(
-    '/course/{courseCode}/students/',
+    '/course',
     createProxyMiddleware({
       target: 'http://localhost:8080',
       changeOrigin: true,
@@ -346,6 +346,20 @@ module.exports = function(app) {
   );
   app.use(
     '/addAnnouncements/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/send/',
+    createProxyMiddleware({
+      target: 'http://localhost:8080',
+      changeOrigin: true,
+    })
+  );
+  app.use(
+    '/sendToUser/',
     createProxyMiddleware({
       target: 'http://localhost:8080',
       changeOrigin: true,

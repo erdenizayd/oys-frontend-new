@@ -34,7 +34,7 @@ export default function CourseAnnouncementsComponent(props) {
 
     useEffect(() => {
         fetchCourse();
-    }, []);
+    }, [announcement]);
 
     async function fetchCourse() {
         const response = (await courseApi.getCourse(props.courseCode.toUpperCase())).data;
@@ -57,7 +57,7 @@ export default function CourseAnnouncementsComponent(props) {
 
     return (
         <div>
-            <Button variant="contained" sx={{float:'right'}} onClick={handleOpen}>Duyuru Ekle</Button>
+            {(localStorage.getItem("role") === 'STUDENT') ? "" :<Button variant="contained" sx={{float:'right'}} onClick={handleOpen}>Duyuru Ekle</Button>}
             {course.announcements.length > 0 ? course.announcements.slice(0).reverse().map(a => {return <AnnouncementComponent announcement={a}/>})
             : <Typography>Şu anda dersin eklenmiş bir duyurusu yok.</Typography>}
             <Modal

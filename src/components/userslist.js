@@ -12,11 +12,13 @@ import UserApi from '../api/userapi';
 import UsersPaginationComponent from './userspagination';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
+import MessageContext from '../context/messagecontext';
 
 function UsersListComponent(props) {
 
     let navigate = useNavigate();
-    const [users, setUsers] = useState([]);
+    const {users, setUsers, privateMessages, setPrivateMessages} = useContext(MessageContext);
+    const [usersList, setUsersList] = useState([]);
     const [isUpdated, setIsUpdated] = useState(false);
     const [pageCount, setPageCount] = useState(0);
     const [page, setPage] = useState(1);
@@ -34,25 +36,25 @@ function UsersListComponent(props) {
         if(props.nameSearch == '' && props.usernameSearch == ''){
             const response = (await userApi.getUsers(page-1)).data;
             setIsUpdated(!isUpdated);
-            setUsers(response);
+            setUsersList(response);
             if(response.length > 0)setPageCount(response[0].pageCount);
         }
         else if(props.usernameSearch == '') {
             const response = (await userApi.getUsersByName(page-1,props.nameSearch)).data;
             setIsUpdated(!isUpdated);
-            setUsers(response);
+            setUsersList(response);
             if(response.length > 0)setPageCount(response[0].pageCount);
         }
         else if(props.nameSearch == '') {
             const response = (await userApi.getUsersByUsername(page-1,props.usernameSearch)).data;
             setIsUpdated(!isUpdated);
-            setUsers(response);
+            setUsersList(response);
             if(response.length > 0)setPageCount(response[0].pageCount);
         }
         else {
             const response = (await userApi.getUsersByNameAndUsername(page-1,props.nameSearch,props.usernameSearch)).data;
             setIsUpdated(!isUpdated);
-            setUsers(response);
+            setUsersList(response);
             if(response.length > 0)setPageCount(response[0].pageCount);
         }
         
@@ -86,6 +88,17 @@ function UsersListComponent(props) {
             })
     }
 
+    function handleNewMessage(username) {
+        console.log(users);
+        if(!users.includes(username)) {
+            let list = [];
+            privateMessages.set(username,list);
+            setPrivateMessages(new Map(privateMessages));
+            users.push(username);
+            setUsers([...users]);
+        }
+        navigate("/messages");
+    }
 
     return (
         <div>
@@ -99,12 +112,12 @@ function UsersListComponent(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {users.map((row) => (
+                {usersList.map((row) => (
                     <TableRow hover >
                     <TableCell onClick={() => {navigate("/usersList/" + row.username)}}>{row.name}</TableCell>
                     <TableCell>{row.username}</TableCell>
                     <TableCell>
-                        <IconButton><EmailIcon/></IconButton>
+                        <IconButton onClick={() => {handleNewMessage(row.username)}}><EmailIcon/></IconButton>
                         {(localStorage.getItem("role") === 'ADMIN') &&
                         <Tooltip title={row.isEnabled ? "Deaktive et" : "Aktive et"}>
                         <IconButton color={row.isEnabled ? "inherit" : "error"} 

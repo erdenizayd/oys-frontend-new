@@ -11,12 +11,12 @@ export default class StudentApi {
         return axios.get("/getDates/" + localStorage.getItem("username"));
     }
     getSchedule(username) {
-        return axios.get("getSchedule/student/" + username);
+        return axios.get("/getSchedule/student/" + username);
     }
     updateSchedule(username, request) {
-        return axios.post("updateSchedule/student/" + username, request);
+        return axios.post("/updateSchedule/student/" + username, request);
     }
     deleteSchedule(username, request) {
-        return axios.put("deleteSchedule/student/" + username, request);
+        return axios.put("/deleteSchedule/student/" + username, request);
     }
 }
